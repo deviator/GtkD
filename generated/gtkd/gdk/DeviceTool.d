@@ -30,6 +30,7 @@ public  import gtkc.gdktypes;
 
 
 /** */
+/+
 public class DeviceTool : ObjectG
 {
 	/** the main Gtk struct */
@@ -115,3 +116,4 @@ public class DeviceTool : ObjectG
 		return gdk_device_tool_get_tool_type(gdkDeviceTool);
 	}
 }
++/

@@ -64,7 +64,7 @@ public interface ActionableIF{
 	public string getActionName();
 
 	/**
-	 * Gets the current target value of @actionable.
+	 * Gets the current target value of @actionabe.
 	 *
 	 * See gtk_actionable_set_action_target_value() for more information.
 	 *

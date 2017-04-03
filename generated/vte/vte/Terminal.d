@@ -133,9 +133,10 @@ public class Terminal : Widget, ScrollableIF
 	}
 
 	/**
-	 * This function does nothing.
-	 *
-	 * Deprecated: Use vte_terminal_event_check_regex_simple() instead.
+	 * Checks each regex in @regexes if the text in and around the position of
+	 * the event matches the regular expressions.  If a match exists, the matched
+	 * text is stored in @matches at the position of the regex in @regexes; otherwise
+	 * %NULL is stored there.
 	 *
 	 * Params:
 	 *     event = a #GdkEvent
@@ -144,9 +145,7 @@ public class Terminal : Widget, ScrollableIF
 	 *     matchFlags = the #GRegexMatchFlags to use when matching the regexes
 	 *     matches = a location to store the matches
 	 *
-	 * Return: %FALSE
-	 *
-	 * Since: 0.44
+	 * Return: %TRUE iff any of the regexes produced a match
 	 */
 	public bool eventCheckGregexSimple(Event event, Regex[] regexes, GRegexMatchFlags matchFlags, string[] matches)
 	{
@@ -157,34 +156,6 @@ public class Terminal : Widget, ScrollableIF
 		}
 		
 		return vte_terminal_event_check_gregex_simple(vteTerminal, (event is null) ? null : event.getEventStruct(), regexesArray.ptr, cast(size_t)matches.length, matchFlags, Str.toStringzArray(matches)) != 0;
-	}
-
-	/**
-	 * Checks each regex in @regexes if the text in and around the position of
-	 * the event matches the regular expressions.  If a match exists, the matched
-	 * text is stored in @matches at the position of the regex in @regexes; otherwise
-	 * %NULL is stored there.
-	 *
-	 * Params:
-	 *     event = a #GdkEvent
-	 *     regexes = an array of #VteRegex
-	 *     nRegexes = number of items in @regexes
-	 *     matchFlags = PCRE2 match flags, or 0
-	 *     matches = a location to store the matches
-	 *
-	 * Return: %TRUE iff any of the regexes produced a match
-	 *
-	 * Since: 0.46
-	 */
-	public bool eventCheckRegexSimple(Event event, RegexVte[] regexes, uint matchFlags, string[] matches)
-	{
-		VteRegex*[] regexesArray = new VteRegex*[regexes.length];
-		for ( int i = 0; i < regexes.length; i++ )
-		{
-			regexesArray[i] = regexes[i].getRegexStruct();
-		}
-		
-		return vte_terminal_event_check_regex_simple(vteTerminal, (event is null) ? null : event.getEventStruct(), regexesArray.ptr, cast(size_t)matches.length, matchFlags, Str.toStringzArray(matches)) != 0;
 	}
 
 	/**
@@ -221,9 +192,9 @@ public class Terminal : Widget, ScrollableIF
 	 *     data = data to send to the child
 	 *     length = length of @data
 	 */
-	public void feedChildBinary(ubyte[] data)
+	public void feedChildBinary(ubyte* data, size_t length)
 	{
-		vte_terminal_feed_child_binary(vteTerminal, data.ptr, cast(size_t)data.length);
+		vte_terminal_feed_child_binary(vteTerminal, data, length);
 	}
 
 	/**
@@ -585,36 +556,16 @@ public class Terminal : Widget, ScrollableIF
 	 * user moves the mouse cursor over a section of displayed text which matches
 	 * this expression, the text will be highlighted.
 	 *
-	 * Deprecated: Use vte_terminal_match_add_regex() or vte_terminal_match_add_regex_full() instead.
-	 *
 	 * Params:
 	 *     gregex = a #GRegex
 	 *     gflags = the #GRegexMatchFlags to use when matching the regex
 	 *
 	 * Return: an integer associated with this expression, or -1 if @gregex could not be
-	 *     transformed into a #VteRegex or @gflags were incompatible
+	 *     transformed into a #VteRegex or @flags were incompatible
 	 */
 	public int matchAddGregex(Regex gregex, GRegexMatchFlags gflags)
 	{
 		return vte_terminal_match_add_gregex(vteTerminal, (gregex is null) ? null : gregex.getRegexStruct(), gflags);
-	}
-
-	/**
-	 * Adds the regular expression @regex to the list of matching expressions.  When the
-	 * user moves the mouse cursor over a section of displayed text which matches
-	 * this expression, the text will be highlighted.
-	 *
-	 * Params:
-	 *     regex = a #VteRegex
-	 *     flags = PCRE2 match flags, or 0
-	 *
-	 * Return: an integer associated with this expression
-	 *
-	 * Since: 0.46
-	 */
-	public int matchAddRegex(RegexVte regex, uint flags)
-	{
-		return vte_terminal_match_add_regex(vteTerminal, (regex is null) ? null : regex.getRegexStruct(), flags);
 	}
 
 	/**
@@ -807,7 +758,7 @@ public class Terminal : Widget, ScrollableIF
 
 	/**
 	 * Searches the next string matching the search regex set with
-	 * vte_terminal_search_set_regex().
+	 * vte_terminal_search_set_gregex().
 	 *
 	 * Return: %TRUE if a match was found
 	 */
@@ -818,7 +769,7 @@ public class Terminal : Widget, ScrollableIF
 
 	/**
 	 * Searches the previous string matching the search regex set with
-	 * vte_terminal_search_set_regex().
+	 * vte_terminal_search_set_gregex().
 	 *
 	 * Return: %TRUE if a match was found
 	 */
@@ -828,11 +779,7 @@ public class Terminal : Widget, ScrollableIF
 	}
 
 	/**
-	 *
-	 *
-	 * Deprecated: use vte_terminal_search_get_regex() instead.
-	 *
-	 * Return: %NULL
+	 * Return: the search #GRegex regex set in @terminal, or %NULL
 	 */
 	public Regex searchGetGregex()
 	{
@@ -847,23 +794,6 @@ public class Terminal : Widget, ScrollableIF
 	}
 
 	/**
-	 * Return: the search #VteRegex regex set in @terminal, or %NULL
-	 *
-	 * Since: 0.46
-	 */
-	public RegexVte searchGetRegex()
-	{
-		auto p = vte_terminal_search_get_regex(vteTerminal);
-		
-		if(p is null)
-		{
-			return null;
-		}
-		
-		return ObjectG.getDObject!(RegexVte)(cast(VteRegex*) p);
-	}
-
-	/**
 	 * Return: whether searching will wrap around
 	 */
 	public bool searchGetWrapAround()
@@ -874,8 +804,6 @@ public class Terminal : Widget, ScrollableIF
 	/**
 	 * Sets the #GRegex regex to search for. Unsets the search regex when passed %NULL.
 	 *
-	 * Deprecated: use vte_terminal_search_set_regex() instead.
-	 *
 	 * Params:
 	 *     gregex = a #GRegex, or %NULL
 	 *     gflags = flags from #GRegexMatchFlags
@@ -883,20 +811,6 @@ public class Terminal : Widget, ScrollableIF
 	public void searchSetGregex(Regex gregex, GRegexMatchFlags gflags)
 	{
 		vte_terminal_search_set_gregex(vteTerminal, (gregex is null) ? null : gregex.getRegexStruct(), gflags);
-	}
-
-	/**
-	 * Sets the regex to search for. Unsets the search regex when passed %NULL.
-	 *
-	 * Params:
-	 *     regex = a #VteRegex, or %NULL
-	 *     flags = PCRE2 match flags, or 0
-	 *
-	 * Since: 0.46
-	 */
-	public void searchSetRegex(RegexVte regex, uint flags)
-	{
-		vte_terminal_search_set_regex(vteTerminal, (regex is null) ? null : regex.getRegexStruct(), flags);
 	}
 
 	/**
@@ -2454,6 +2368,63 @@ public class Terminal : Widget, ScrollableIF
 	}
 	
 	extern(C) static void callBackMoveWindowDestroy(OnMoveWindowDelegateWrapper wrapper, GClosure* closure)
+	{
+		wrapper.remove(wrapper);
+	}
+
+	protected class OnNotificationReceivedDelegateWrapper
+	{
+		static OnNotificationReceivedDelegateWrapper[] listeners;
+		void delegate(string, string, Terminal) dlg;
+		gulong handlerId;
+		
+		this(void delegate(string, string, Terminal) dlg)
+		{
+			this.dlg = dlg;
+			this.listeners ~= this;
+		}
+		
+		void remove(OnNotificationReceivedDelegateWrapper source)
+		{
+			foreach(index, wrapper; listeners)
+			{
+				if (wrapper.handlerId == source.handlerId)
+				{
+					listeners[index] = null;
+					listeners = std.algorithm.remove(listeners, index);
+					break;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Emitted when a process running in the terminal wants to
+	 * send a notification to the desktop environment.
+	 *
+	 * Params:
+	 *     summary = The summary
+	 *     bod = Extra optional text
+	 */
+	gulong addOnNotificationReceived(void delegate(string, string, Terminal) dlg, ConnectFlags connectFlags=cast(ConnectFlags)0)
+	{
+		auto wrapper = new OnNotificationReceivedDelegateWrapper(dlg);
+		wrapper.handlerId = Signals.connectData(
+			this,
+			"notification-received",
+			cast(GCallback)&callBackNotificationReceived,
+			cast(void*)wrapper,
+			cast(GClosureNotify)&callBackNotificationReceivedDestroy,
+			connectFlags);
+		return wrapper.handlerId;
+	}
+	
+	extern(C) static void callBackNotificationReceived(VteTerminal* terminalStruct, char* summary, char* bod, OnNotificationReceivedDelegateWrapper wrapper)
+	{
+		wrapper.dlg(Str.toString(summary), Str.toString(bod), wrapper.outer);
+	}
+	
+	extern(C) static void callBackNotificationReceivedDestroy(OnNotificationReceivedDelegateWrapper wrapper, GClosure* closure)
 	{
 		wrapper.remove(wrapper);
 	}

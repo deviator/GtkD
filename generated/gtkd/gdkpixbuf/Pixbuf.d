@@ -762,7 +762,7 @@ public class Pixbuf : ObjectG, IconIF, LoadableIconIF
 	 * Params:
 	 *     filename = The name of the file to identify
 	 *     cancellable = optional #GCancellable object, %NULL to ignore
-	 *     callback = a #GAsyncReadyCallback to call when the file info is available
+	 *     callback = a #GAsyncReadyCallback to call when the the pixbuf is loaded
 	 *     userData = the data to pass to the callback function
 	 *
 	 * Since: 2.32
@@ -844,7 +844,7 @@ public class Pixbuf : ObjectG, IconIF, LoadableIconIF
 	 * Params:
 	 *     stream = a #GInputStream from which to load the pixbuf
 	 *     cancellable = optional #GCancellable object, %NULL to ignore
-	 *     callback = a #GAsyncReadyCallback to call when the pixbuf is loaded
+	 *     callback = a #GAsyncReadyCallback to call when the the pixbuf is loaded
 	 *     userData = the data to pass to the callback function
 	 *
 	 * Since: 2.24
@@ -869,7 +869,7 @@ public class Pixbuf : ObjectG, IconIF, LoadableIconIF
 	 *     height = the height the image should have or -1 to not constrain the height
 	 *     preserveAspectRatio = %TRUE to preserve the image's aspect ratio
 	 *     cancellable = optional #GCancellable object, %NULL to ignore
-	 *     callback = a #GAsyncReadyCallback to call when the pixbuf is loaded
+	 *     callback = a #GAsyncReadyCallback to call when the the pixbuf is loaded
 	 *     userData = the data to pass to the callback function
 	 *
 	 * Since: 2.24
@@ -947,8 +947,7 @@ public class Pixbuf : ObjectG, IconIF, LoadableIconIF
 	 * appropriate transform will be performed so that the pixbuf
 	 * is oriented correctly.
 	 *
-	 * Return: A newly-created pixbuf, %NULL if
-	 *     not enough memory could be allocated for it, or a reference to the
+	 * Return: A newly-created pixbuf, or a reference to the
 	 *     input pixbuf (with an increased reference count).
 	 *
 	 * Since: 2.12
@@ -970,7 +969,7 @@ public class Pixbuf : ObjectG, IconIF, LoadableIconIF
 	 * @scale_x and @scale_y then translating by @offset_x and @offset_y.
 	 * This gives an image in the coordinates of the destination pixbuf.
 	 * The rectangle (@dest_x, @dest_y, @dest_width, @dest_height)
-	 * is then alpha blended onto the corresponding rectangle of the
+	 * is then composited onto the corresponding rectangle of the
 	 * original destination image.
 	 *
 	 * When the destination rectangle contains parts not in the source
@@ -1000,13 +999,10 @@ public class Pixbuf : ObjectG, IconIF, LoadableIconIF
 	/**
 	 * Creates a transformation of the source image @src by scaling by
 	 * @scale_x and @scale_y then translating by @offset_x and @offset_y,
-	 * then alpha blends the rectangle (@dest_x ,@dest_y, @dest_width,
+	 * then composites the rectangle (@dest_x ,@dest_y, @dest_width,
 	 * @dest_height) of the resulting image with a checkboard of the
 	 * colors @color1 and @color2 and renders it onto the destination
 	 * image.
-	 *
-	 * If the source image has no alpha channel, and @overall_alpha is 255, a fast
-	 * path is used which omits the alpha blending and just performs the scaling.
 	 *
 	 * See gdk_pixbuf_composite_color_simple() for a simpler variant of this
 	 * function suitable for many tasks.
@@ -1036,7 +1032,7 @@ public class Pixbuf : ObjectG, IconIF, LoadableIconIF
 
 	/**
 	 * Creates a new #GdkPixbuf by scaling @src to @dest_width x
-	 * @dest_height and alpha blending the result with a checkboard of colors
+	 * @dest_height and compositing the result with a checkboard of colors
 	 * @color1 and @color2.
 	 *
 	 * Params:
@@ -1065,8 +1061,7 @@ public class Pixbuf : ObjectG, IconIF, LoadableIconIF
 
 	/**
 	 * Creates a new #GdkPixbuf with a copy of the information in the specified
-	 * @pixbuf. Note that this does not copy the options set on the original #GdkPixbuf,
-	 * use gdk_pixbuf_copy_options() for this.
+	 * @pixbuf.
 	 *
 	 * Return: A newly-created pixbuf with a reference count of 1, or %NULL if
 	 *     not enough memory could be allocated.
@@ -1103,24 +1098,6 @@ public class Pixbuf : ObjectG, IconIF, LoadableIconIF
 	public void copyArea(int srcX, int srcY, int width, int height, Pixbuf destPixbuf, int destX, int destY)
 	{
 		gdk_pixbuf_copy_area(gdkPixbuf, srcX, srcY, width, height, (destPixbuf is null) ? null : destPixbuf.getPixbufStruct(), destX, destY);
-	}
-
-	/**
-	 * Copy the key/value pair options attached to a #GdkPixbuf to another.
-	 * This is useful to keep original metadata after having manipulated
-	 * a file. However be careful to remove metadata which you've already
-	 * applied, such as the "orientation" option after rotating the image.
-	 *
-	 * Params:
-	 *     destPixbuf = the #GdkPixbuf to copy options to
-	 *
-	 * Return: %TRUE on success.
-	 *
-	 * Since: 2.36
-	 */
-	public bool copyOptions(Pixbuf destPixbuf)
-	{
-		return gdk_pixbuf_copy_options(gdkPixbuf, (destPixbuf is null) ? null : destPixbuf.getPixbufStruct()) != 0;
 	}
 
 	/**
@@ -1378,25 +1355,8 @@ public class Pixbuf : ObjectG, IconIF, LoadableIconIF
 	}
 
 	/**
-	 * Remove the key/value pair option attached to a #GdkPixbuf.
-	 *
-	 * Params:
-	 *     key = a nul-terminated string representing the key to remove.
-	 *
-	 * Return: %TRUE if an option was removed, %FALSE if not.
-	 *
-	 * Since: 2.36
-	 */
-	public bool removeOption(string key)
-	{
-		return gdk_pixbuf_remove_option(gdkPixbuf, Str.toStringz(key)) != 0;
-	}
-
-	/**
 	 * Rotates a pixbuf by a multiple of 90 degrees, and returns the
 	 * result in a new pixbuf.
-	 *
-	 * If @angle is 0, a copy of @src is returned, avoiding any rotation.
 	 *
 	 * Params:
 	 *     angle = the angle to rotate by
@@ -1472,65 +1432,6 @@ public class Pixbuf : ObjectG, IconIF, LoadableIconIF
 	}
 
 	/**
-	 * Saves @pixbuf to an output stream.
-	 *
-	 * Supported file formats are currently "jpeg", "tiff", "png", "ico" or
-	 * "bmp". See gdk_pixbuf_save_to_stream() for more details.
-	 *
-	 * Params:
-	 *     stream = a #GOutputStream to save the pixbuf to
-	 *     type = name of file format
-	 *     optionKeys = name of options to set, %NULL-terminated
-	 *     optionValues = values for named options
-	 *     cancellable = optional #GCancellable object, %NULL to ignore
-	 *
-	 * Return: %TRUE if the pixbuf was saved successfully, %FALSE if an
-	 *     error was set.
-	 *
-	 * Since: 2.36
-	 *
-	 * Throws: GException on failure.
-	 */
-	public bool saveToStreamv(OutputStream stream, string type, string[] optionKeys, string[] optionValues, Cancellable cancellable)
-	{
-		GError* err = null;
-		
-		auto p = gdk_pixbuf_save_to_streamv(gdkPixbuf, (stream is null) ? null : stream.getOutputStreamStruct(), Str.toStringz(type), Str.toStringzArray(optionKeys), Str.toStringzArray(optionValues), (cancellable is null) ? null : cancellable.getCancellableStruct(), &err) != 0;
-		
-		if (err !is null)
-		{
-			throw new GException( new ErrorG(err) );
-		}
-		
-		return p;
-	}
-
-	/**
-	 * Saves @pixbuf to an output stream asynchronously.
-	 *
-	 * For more details see gdk_pixbuf_save_to_streamv(), which is the synchronous
-	 * version of this function.
-	 *
-	 * When the operation is finished, @callback will be called in the main thread.
-	 * You can then call gdk_pixbuf_save_to_stream_finish() to get the result of the operation.
-	 *
-	 * Params:
-	 *     stream = a #GOutputStream to which to save the pixbuf
-	 *     type = name of file format
-	 *     optionKeys = name of options to set, %NULL-terminated
-	 *     optionValues = values for named options
-	 *     cancellable = optional #GCancellable object, %NULL to ignore
-	 *     callback = a #GAsyncReadyCallback to call when the pixbuf is saved
-	 *     userData = the data to pass to the callback function
-	 *
-	 * Since: 2.36
-	 */
-	public void saveToStreamvAsync(OutputStream stream, string type, string[] optionKeys, string[] optionValues, Cancellable cancellable, GAsyncReadyCallback callback, void* userData)
-	{
-		gdk_pixbuf_save_to_streamv_async(gdkPixbuf, (stream is null) ? null : stream.getOutputStreamStruct(), Str.toStringz(type), Str.toStringzArray(optionKeys), Str.toStringzArray(optionValues), (cancellable is null) ? null : cancellable.getCancellableStruct(), callback, userData);
-	}
-
-	/**
 	 * Saves pixbuf to a file in @type, which is currently "jpeg", "png", "tiff", "ico" or "bmp".
 	 * If @error is set, %FALSE will be returned.
 	 * See gdk_pixbuf_save () for more details.
@@ -1602,10 +1503,7 @@ public class Pixbuf : ObjectG, IconIF, LoadableIconIF
 	 * You can scale a sub-portion of @src by creating a sub-pixbuf
 	 * pointing into @src; see gdk_pixbuf_new_subpixbuf().
 	 *
-	 * If @dest_width and @dest_height are equal to the @src width and height, a
-	 * copy of @src is returned, avoiding any scaling.
-	 *
-	 * For more complicated scaling/alpha blending see gdk_pixbuf_scale()
+	 * For more complicated scaling/compositing see gdk_pixbuf_scale()
 	 * and gdk_pixbuf_composite().
 	 *
 	 * Params:
@@ -1626,23 +1524,5 @@ public class Pixbuf : ObjectG, IconIF, LoadableIconIF
 		}
 		
 		return ObjectG.getDObject!(Pixbuf)(cast(GdkPixbuf*) p, true);
-	}
-
-	/**
-	 * Attaches a key/value pair as an option to a #GdkPixbuf. If @key already
-	 * exists in the list of options attached to @pixbuf, the new value is
-	 * ignored and %FALSE is returned.
-	 *
-	 * Params:
-	 *     key = a nul-terminated string.
-	 *     value = a nul-terminated string.
-	 *
-	 * Return: %TRUE on success.
-	 *
-	 * Since: 2.2
-	 */
-	public bool setOption(string key, string value)
-	{
-		return gdk_pixbuf_set_option(gdkPixbuf, Str.toStringz(key), Str.toStringz(value)) != 0;
 	}
 }

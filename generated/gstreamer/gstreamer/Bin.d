@@ -392,20 +392,6 @@ public class Bin : Element, ChildProxyIF
 	}
 
 	/**
-	 * Return the suppressed flags of the bin.
-	 *
-	 * MT safe.
-	 *
-	 * Return: the bin's suppressed #GstElementFlags.
-	 *
-	 * Since: 1.10
-	 */
-	public GstElementFlags getSuppressedFlags()
-	{
-		return gst_bin_get_suppressed_flags(gstBin);
-	}
-
-	/**
 	 * Looks for all elements inside the bin that implements the given
 	 * interface. You can safely cast all returned elements to the given interface.
 	 * The function recurses inside child bins. The iterator will yield a series
@@ -582,24 +568,6 @@ public class Bin : Element, ChildProxyIF
 	}
 
 	/**
-	 * Suppress the given flags on the bin. #GstElementFlags of a
-	 * child element are propagated when it is added to the bin.
-	 * When suppressed flags are set, those specified flags will
-	 * not be propagated to the bin.
-	 *
-	 * MT safe.
-	 *
-	 * Params:
-	 *     flags = the #GstElementFlags to suppress
-	 *
-	 * Since: 1.10
-	 */
-	public void setSuppressedFlags(GstElementFlags flags)
-	{
-		gst_bin_set_suppressed_flags(gstBin, flags);
-	}
-
-	/**
 	 * Synchronizes the state of every child of @bin with the state
 	 * of @bin. See also gst_element_sync_state_with_parent().
 	 *
@@ -611,122 +579,6 @@ public class Bin : Element, ChildProxyIF
 	public bool syncChildrenStates()
 	{
 		return gst_bin_sync_children_states(gstBin) != 0;
-	}
-
-	protected class OnDeepElementAddedDelegateWrapper
-	{
-		static OnDeepElementAddedDelegateWrapper[] listeners;
-		void delegate(Bin, Element, Bin) dlg;
-		gulong handlerId;
-		
-		this(void delegate(Bin, Element, Bin) dlg)
-		{
-			this.dlg = dlg;
-			this.listeners ~= this;
-		}
-		
-		void remove(OnDeepElementAddedDelegateWrapper source)
-		{
-			foreach(index, wrapper; listeners)
-			{
-				if (wrapper.handlerId == source.handlerId)
-				{
-					listeners[index] = null;
-					listeners = std.algorithm.remove(listeners, index);
-					break;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Will be emitted after the element was added to sub_bin.
-	 *
-	 * Params:
-	 *     subBin = the #GstBin the element was added to
-	 *     element = the #GstElement that was added to @sub_bin
-	 *
-	 * Since: 1.10
-	 */
-	gulong addOnDeepElementAdded(void delegate(Bin, Element, Bin) dlg, ConnectFlags connectFlags=cast(ConnectFlags)0)
-	{
-		auto wrapper = new OnDeepElementAddedDelegateWrapper(dlg);
-		wrapper.handlerId = Signals.connectData(
-			this,
-			"deep-element-added",
-			cast(GCallback)&callBackDeepElementAdded,
-			cast(void*)wrapper,
-			cast(GClosureNotify)&callBackDeepElementAddedDestroy,
-			connectFlags);
-		return wrapper.handlerId;
-	}
-	
-	extern(C) static void callBackDeepElementAdded(GstBin* binStruct, GstBin* subBin, GstElement* element, OnDeepElementAddedDelegateWrapper wrapper)
-	{
-		wrapper.dlg(ObjectG.getDObject!(Bin)(subBin), ObjectG.getDObject!(Element)(element), wrapper.outer);
-	}
-	
-	extern(C) static void callBackDeepElementAddedDestroy(OnDeepElementAddedDelegateWrapper wrapper, GClosure* closure)
-	{
-		wrapper.remove(wrapper);
-	}
-
-	protected class OnDeepElementRemovedDelegateWrapper
-	{
-		static OnDeepElementRemovedDelegateWrapper[] listeners;
-		void delegate(Bin, Element, Bin) dlg;
-		gulong handlerId;
-		
-		this(void delegate(Bin, Element, Bin) dlg)
-		{
-			this.dlg = dlg;
-			this.listeners ~= this;
-		}
-		
-		void remove(OnDeepElementRemovedDelegateWrapper source)
-		{
-			foreach(index, wrapper; listeners)
-			{
-				if (wrapper.handlerId == source.handlerId)
-				{
-					listeners[index] = null;
-					listeners = std.algorithm.remove(listeners, index);
-					break;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Will be emitted after the element was removed from sub_bin.
-	 *
-	 * Params:
-	 *     subBin = the #GstBin the element was removed from
-	 *     element = the #GstElement that was removed from @sub_bin
-	 *
-	 * Since: 1.10
-	 */
-	gulong addOnDeepElementRemoved(void delegate(Bin, Element, Bin) dlg, ConnectFlags connectFlags=cast(ConnectFlags)0)
-	{
-		auto wrapper = new OnDeepElementRemovedDelegateWrapper(dlg);
-		wrapper.handlerId = Signals.connectData(
-			this,
-			"deep-element-removed",
-			cast(GCallback)&callBackDeepElementRemoved,
-			cast(void*)wrapper,
-			cast(GClosureNotify)&callBackDeepElementRemovedDestroy,
-			connectFlags);
-		return wrapper.handlerId;
-	}
-	
-	extern(C) static void callBackDeepElementRemoved(GstBin* binStruct, GstBin* subBin, GstElement* element, OnDeepElementRemovedDelegateWrapper wrapper)
-	{
-		wrapper.dlg(ObjectG.getDObject!(Bin)(subBin), ObjectG.getDObject!(Element)(element), wrapper.outer);
-	}
-	
-	extern(C) static void callBackDeepElementRemovedDestroy(OnDeepElementRemovedDelegateWrapper wrapper, GClosure* closure)
-	{
-		wrapper.remove(wrapper);
 	}
 
 	protected class OnDoLatencyDelegateWrapper

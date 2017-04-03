@@ -35,15 +35,16 @@ public  import gtkc.gdktypes;
 /**
  * #GdkDrawingContext is an object that represents the current drawing
  * state of a #GdkWindow.
- * 
+ *
  * It's possible to use a #GdkDrawingContext to draw on a #GdkWindow
  * via rendering API like Cairo or OpenGL.
- * 
+ *
  * A #GdkDrawingContext can only be created by calling gdk_window_begin_draw_frame()
  * and will be valid until a call to gdk_window_end_draw_frame().
- * 
+ *
  * #GdkDrawingContext is available since GDK 3.22
  */
+/+
 public class DrawingContext : ObjectG
 {
 	/** the main Gtk struct */
@@ -100,12 +101,12 @@ public class DrawingContext : ObjectG
 	public Context getCairoContext()
 	{
 		auto p = gdk_drawing_context_get_cairo_context(gdkDrawingContext);
-		
+
 		if(p is null)
 		{
 			return null;
 		}
-		
+
 		return new Context(cast(cairo_t*) p);
 	}
 
@@ -119,12 +120,12 @@ public class DrawingContext : ObjectG
 	public Region getClip()
 	{
 		auto p = gdk_drawing_context_get_clip(gdkDrawingContext);
-		
+
 		if(p is null)
 		{
 			return null;
 		}
-		
+
 		return new Region(cast(cairo_region_t*) p);
 	}
 
@@ -138,12 +139,12 @@ public class DrawingContext : ObjectG
 	public Window getWindow()
 	{
 		auto p = gdk_drawing_context_get_window(gdkDrawingContext);
-		
+
 		if(p is null)
 		{
 			return null;
 		}
-		
+
 		return ObjectG.getDObject!(Window)(cast(GdkWindow*) p);
 	}
 
@@ -159,3 +160,4 @@ public class DrawingContext : ObjectG
 		return gdk_drawing_context_is_valid(gdkDrawingContext) != 0;
 	}
 }
++/

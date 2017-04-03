@@ -149,10 +149,8 @@ public class SourceGutterRenderer : ObjectG
 	 * Get the x-alignment and y-alignment of the gutter renderer.
 	 *
 	 * Params:
-	 *     xalign = return location for the x-alignment,
-	 *         or %NULL to ignore.
-	 *     yalign = return location for the y-alignment,
-	 *         or %NULL to ignore.
+	 *     xalign = return location for the x-alignment (can be %NULL)
+	 *     yalign = return location for the y-alignment (can be %NULL)
 	 */
 	public void getAlignment(out float xalign, out float yalign)
 	{
@@ -193,10 +191,8 @@ public class SourceGutterRenderer : ObjectG
 	 * Get the x-padding and y-padding of the gutter renderer.
 	 *
 	 * Params:
-	 *     xpad = return location for the x-padding,
-	 *         or %NULL to ignore.
-	 *     ypad = return location for the y-padding,
-	 *         or %NULL to ignore.
+	 *     xpad = return location for the x-padding (can be %NULL)
+	 *     ypad = return location for the y-padding (can be %NULL)
 	 */
 	public void getPadding(out int xpad, out int ypad)
 	{

@@ -576,15 +576,12 @@ public class SourceBuffer : TextBuffer
 	}
 
 	/**
-	 * Controls whether syntax is highlighted in the buffer.
-	 *
-	 * If @highlight is %TRUE, the text will be highlighted according to the syntax
-	 * patterns specified in the #GtkSourceLanguage set with
-	 * gtk_source_buffer_set_language().
-	 *
-	 * If @highlight is %FALSE, syntax highlighting is disabled and all the
-	 * #GtkTextTag objects that have been added by the syntax highlighting engine
-	 * are removed from the buffer.
+	 * Controls whether syntax is highlighted in the buffer. If @highlight
+	 * is %TRUE, the text will be highlighted according to the syntax
+	 * patterns specified in the language set with
+	 * gtk_source_buffer_set_language(). If @highlight is %FALSE, syntax highlighting
+	 * is disabled and all the GtkTextTag objects that have been added by the
+	 * syntax highlighting engine are removed from the buffer.
 	 *
 	 * Params:
 	 *     highlight = %TRUE to enable syntax highlighting, %FALSE to disable it.
@@ -622,11 +619,11 @@ public class SourceBuffer : TextBuffer
 	}
 
 	/**
-	 * Associates a #GtkSourceLanguage with the buffer.
-	 *
-	 * Note that a #GtkSourceLanguage affects not only the syntax highlighting, but
-	 * also the [context classes][context-classes]. If you want to disable just the
-	 * syntax highlighting, see gtk_source_buffer_set_highlight_syntax().
+	 * Associate a #GtkSourceLanguage with the buffer. If @language is
+	 * not-%NULL and syntax highlighting is enabled (see gtk_source_buffer_set_highlight_syntax()),
+	 * the syntax patterns defined in @language will be used to highlight the text
+	 * contained in the buffer. If @language is %NULL, the text contained in the
+	 * buffer is not highlighted.
 	 *
 	 * The buffer holds a reference to @language.
 	 *
@@ -656,19 +653,8 @@ public class SourceBuffer : TextBuffer
 	}
 
 	/**
-	 * Sets a #GtkSourceStyleScheme to be used by the buffer and the view.
-	 *
-	 * Note that a #GtkSourceStyleScheme affects not only the syntax highlighting,
-	 * but also other #GtkSourceView features such as highlighting the current line,
-	 * matching brackets, the line numbers, etc.
-	 *
-	 * Instead of setting a %NULL @scheme, it is better to disable syntax
-	 * highlighting with gtk_source_buffer_set_highlight_syntax(), and setting the
-	 * #GtkSourceStyleScheme with the "classic" or "tango" ID, because those two
-	 * style schemes follow more closely the GTK+ theme (for example for the
-	 * background color).
-	 *
-	 * The buffer holds a reference to @scheme.
+	 * Sets style scheme used by the buffer. If @scheme is %NULL no
+	 * style scheme is used.
 	 *
 	 * Params:
 	 *     scheme = a #GtkSourceStyleScheme or %NULL.

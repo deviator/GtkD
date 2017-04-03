@@ -26,7 +26,6 @@ module gdk.Seat;
 
 private import gdk.Cursor;
 private import gdk.Device;
-private import gdk.DeviceTool;
 private import gdk.Display;
 private import gdk.Event;
 private import gdk.Window;
@@ -352,126 +351,6 @@ public class Seat : ObjectG
 	}
 	
 	extern(C) static void callBackDeviceRemovedDestroy(OnDeviceRemovedDelegateWrapper wrapper, GClosure* closure)
-	{
-		wrapper.remove(wrapper);
-	}
-
-	protected class OnToolAddedDelegateWrapper
-	{
-		static OnToolAddedDelegateWrapper[] listeners;
-		void delegate(DeviceTool, Seat) dlg;
-		gulong handlerId;
-		
-		this(void delegate(DeviceTool, Seat) dlg)
-		{
-			this.dlg = dlg;
-			this.listeners ~= this;
-		}
-		
-		void remove(OnToolAddedDelegateWrapper source)
-		{
-			foreach(index, wrapper; listeners)
-			{
-				if (wrapper.handlerId == source.handlerId)
-				{
-					listeners[index] = null;
-					listeners = std.algorithm.remove(listeners, index);
-					break;
-				}
-			}
-		}
-	}
-
-	/**
-	 * The ::tool-added signal is emitted whenever a new tool
-	 * is made known to the seat. The tool may later be assigned
-	 * to a device (i.e. on proximity with a tablet). The device
-	 * will emit the #GdkDevice::tool-changed signal accordingly.
-	 *
-	 * A same tool may be used by several devices.
-	 *
-	 * Params:
-	 *     tool = the new #GdkDeviceTool known to the seat
-	 *
-	 * Since: 3.22
-	 */
-	gulong addOnToolAdded(void delegate(DeviceTool, Seat) dlg, ConnectFlags connectFlags=cast(ConnectFlags)0)
-	{
-		auto wrapper = new OnToolAddedDelegateWrapper(dlg);
-		wrapper.handlerId = Signals.connectData(
-			this,
-			"tool-added",
-			cast(GCallback)&callBackToolAdded,
-			cast(void*)wrapper,
-			cast(GClosureNotify)&callBackToolAddedDestroy,
-			connectFlags);
-		return wrapper.handlerId;
-	}
-	
-	extern(C) static void callBackToolAdded(GdkSeat* seatStruct, GdkDeviceTool* tool, OnToolAddedDelegateWrapper wrapper)
-	{
-		wrapper.dlg(ObjectG.getDObject!(DeviceTool)(tool), wrapper.outer);
-	}
-	
-	extern(C) static void callBackToolAddedDestroy(OnToolAddedDelegateWrapper wrapper, GClosure* closure)
-	{
-		wrapper.remove(wrapper);
-	}
-
-	protected class OnToolRemovedDelegateWrapper
-	{
-		static OnToolRemovedDelegateWrapper[] listeners;
-		void delegate(DeviceTool, Seat) dlg;
-		gulong handlerId;
-		
-		this(void delegate(DeviceTool, Seat) dlg)
-		{
-			this.dlg = dlg;
-			this.listeners ~= this;
-		}
-		
-		void remove(OnToolRemovedDelegateWrapper source)
-		{
-			foreach(index, wrapper; listeners)
-			{
-				if (wrapper.handlerId == source.handlerId)
-				{
-					listeners[index] = null;
-					listeners = std.algorithm.remove(listeners, index);
-					break;
-				}
-			}
-		}
-	}
-
-	/**
-	 * This signal is emitted whenever a tool is no longer known
-	 * to this @seat.
-	 *
-	 * Params:
-	 *     tool = the just removed #GdkDeviceTool
-	 *
-	 * Since: 3.22
-	 */
-	gulong addOnToolRemoved(void delegate(DeviceTool, Seat) dlg, ConnectFlags connectFlags=cast(ConnectFlags)0)
-	{
-		auto wrapper = new OnToolRemovedDelegateWrapper(dlg);
-		wrapper.handlerId = Signals.connectData(
-			this,
-			"tool-removed",
-			cast(GCallback)&callBackToolRemoved,
-			cast(void*)wrapper,
-			cast(GClosureNotify)&callBackToolRemovedDestroy,
-			connectFlags);
-		return wrapper.handlerId;
-	}
-	
-	extern(C) static void callBackToolRemoved(GdkSeat* seatStruct, GdkDeviceTool* tool, OnToolRemovedDelegateWrapper wrapper)
-	{
-		wrapper.dlg(ObjectG.getDObject!(DeviceTool)(tool), wrapper.outer);
-	}
-	
-	extern(C) static void callBackToolRemovedDestroy(OnToolRemovedDelegateWrapper wrapper, GClosure* closure)
 	{
 		wrapper.remove(wrapper);
 	}

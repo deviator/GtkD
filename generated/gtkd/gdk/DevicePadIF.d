@@ -32,13 +32,13 @@ public  import gtkc.gdktypes;
  * #GdkDevicePad is an interface implemented by devices of type
  * %GDK_SOURCE_TABLET_PAD, it allows querying the features provided
  * by the pad device.
- * 
+ *
  * Tablet pads may contain one or more groups, each containing a subset
  * of the buttons/rings/strips available. gdk_device_pad_get_n_groups()
  * can be used to obtain the number of groups, gdk_device_pad_get_n_features()
  * and gdk_device_pad_get_feature_group() can be combined to find out the
  * number of buttons/rings/strips the device has, and how are they grouped.
- * 
+ *
  * Each of those groups have different modes, which may be used to map
  * each individual pad feature to multiple actions. Only one mode is
  * effective (current) for each given group, different groups may have
@@ -47,6 +47,7 @@ public  import gtkc.gdktypes;
  * mode for a given group will be notified through the #GdkEventPadGroupMode
  * event.
  */
+/+
 public interface DevicePadIF{
 	/** Get the main Gtk struct */
 	public GdkDevicePad* getDevicePadStruct();
@@ -105,3 +106,4 @@ public interface DevicePadIF{
 	 */
 	public int getNGroups();
 }
++/

@@ -196,13 +196,9 @@ public template ValueT(TStruct)
 	 * Params:
 	 *     value = a #GValue representing the current accessible value
 	 */
-	public void getCurrentValue(out Value value)
+	public void getCurrentValue(Value value)
 	{
-		GValue* outvalue = gMalloc!GValue();
-		
-		atk_value_get_current_value(getValueStruct(), outvalue);
-		
-		value = ObjectG.getDObject!(Value)(outvalue, true);
+		atk_value_get_current_value(getValueStruct(), (value is null) ? null : value.getValueStruct());
 	}
 
 	/**
@@ -229,13 +225,9 @@ public template ValueT(TStruct)
 	 * Params:
 	 *     value = a #GValue representing the maximum accessible value
 	 */
-	public void getMaximumValue(out Value value)
+	public void getMaximumValue(Value value)
 	{
-		GValue* outvalue = gMalloc!GValue();
-		
-		atk_value_get_maximum_value(getValueStruct(), outvalue);
-		
-		value = ObjectG.getDObject!(Value)(outvalue, true);
+		atk_value_get_maximum_value(getValueStruct(), (value is null) ? null : value.getValueStruct());
 	}
 
 	/**
@@ -250,13 +242,9 @@ public template ValueT(TStruct)
 	 *
 	 * Since: 1.12
 	 */
-	public void getMinimumIncrement(out Value value)
+	public void getMinimumIncrement(Value value)
 	{
-		GValue* outvalue = gMalloc!GValue();
-		
-		atk_value_get_minimum_increment(getValueStruct(), outvalue);
-		
-		value = ObjectG.getDObject!(Value)(outvalue, true);
+		atk_value_get_minimum_increment(getValueStruct(), (value is null) ? null : value.getValueStruct());
 	}
 
 	/**
@@ -267,13 +255,9 @@ public template ValueT(TStruct)
 	 * Params:
 	 *     value = a #GValue representing the minimum accessible value
 	 */
-	public void getMinimumValue(out Value value)
+	public void getMinimumValue(Value value)
 	{
-		GValue* outvalue = gMalloc!GValue();
-		
-		atk_value_get_minimum_value(getValueStruct(), outvalue);
-		
-		value = ObjectG.getDObject!(Value)(outvalue, true);
+		atk_value_get_minimum_value(getValueStruct(), (value is null) ? null : value.getValueStruct());
 	}
 
 	/**

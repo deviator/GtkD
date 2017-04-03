@@ -112,8 +112,7 @@ public class IOModule : TypeModule
 	 * which allows delayed/lazy loading of modules.
 	 *
 	 * Params:
-	 *     dirname = pathname for a directory containing modules
-	 *         to load.
+	 *     dirname = pathname for a directory containing modules to load.
 	 *
 	 * Return: a list of #GIOModules loaded
 	 *     from the directory,
@@ -142,8 +141,7 @@ public class IOModule : TypeModule
 	 * which allows delayed/lazy loading of modules.
 	 *
 	 * Params:
-	 *     dirname = pathname for a directory containing modules
-	 *         to load.
+	 *     dirname = pathname for a directory containing modules to load.
 	 *     scop = a scope to use when scanning the modules.
 	 *
 	 * Return: a list of #GIOModules loaded
@@ -181,8 +179,7 @@ public class IOModule : TypeModule
 	 * use g_io_modules_load_all_in_directory().
 	 *
 	 * Params:
-	 *     dirname = pathname for a directory containing modules
-	 *         to scan.
+	 *     dirname = pathname for a directory containing modules to scan.
 	 *
 	 * Since: 2.24
 	 */
@@ -205,8 +202,7 @@ public class IOModule : TypeModule
 	 * use g_io_modules_load_all_in_directory().
 	 *
 	 * Params:
-	 *     dirname = pathname for a directory containing modules
-	 *         to scan.
+	 *     dirname = pathname for a directory containing modules to scan.
 	 *     scop = a scope to use when scanning the modules
 	 *
 	 * Since: 2.30

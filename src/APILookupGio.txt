@@ -50,13 +50,13 @@ code: start
 		static ScopedOnCommandLineDelegateWrapper[] listeners;
 		int delegate(Scoped!ApplicationCommandLine, Application) dlg;
 		gulong handlerId;
-		
+
 		this(int delegate(Scoped!ApplicationCommandLine, Application) dlg)
 		{
 			this.dlg = dlg;
 			this.listeners ~= this;
 		}
-		
+
 		void remove(ScopedOnCommandLineDelegateWrapper source)
 		{
 			foreach(index, wrapper; listeners)
@@ -95,12 +95,12 @@ code: start
 			connectFlags);
 		return wrapper.handlerId;
 	}
-	
+
 	extern(C) static int callBackScopedCommandLine(GApplication* applicationStruct, GApplicationCommandLine* commandLine, ScopedOnCommandLineDelegateWrapper wrapper)
 	{
 		return wrapper.dlg(scoped!ApplicationCommandLine(commandLine), wrapper.outer);
 	}
-	
+
 	extern(C) static void callBackScopedCommandLineDestroy(ScopedOnCommandLineDelegateWrapper wrapper, GClosure* closure)
 	{
 		wrapper.remove(wrapper);
@@ -670,10 +670,6 @@ move: resources_lookup_data Resource
 move: resources_open_stream Resource
 move: resources_register Resource _register
 move: resources_unregister Resource _unregister
-
-move: keyfile_settings_backend_new SettingsBackend
-move: memory_settings_backend_new SettingsBackend
-move: null_settings_backend_new SettingsBackend
 
 move: simple_async_report_error_in_idle SimpleAsyncResult
 move: simple_async_report_gerror_in_idle SimpleAsyncResult

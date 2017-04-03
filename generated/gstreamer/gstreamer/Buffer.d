@@ -587,18 +587,6 @@ public class Buffer
 	}
 
 	/**
-	 * Get the #GstBufferFlags flags set on this buffer.
-	 *
-	 * Return: the flags set on this buffer.
-	 *
-	 * Since: 1.10
-	 */
-	public GstBufferFlags getFlags()
-	{
-		return gst_buffer_get_flags(gstBuffer);
-	}
-
-	/**
 	 * Get the memory block at index @idx in @buffer.
 	 *
 	 * Params:
@@ -713,12 +701,6 @@ public class Buffer
 	public size_t getSizesRange(uint idx, int length, out size_t offset, out size_t maxsize)
 	{
 		return gst_buffer_get_sizes_range(gstBuffer, idx, length, &offset, &maxsize);
-	}
-
-	/** */
-	public bool hasFlags(GstBufferFlags flags)
-	{
-		return gst_buffer_has_flags(gstBuffer, flags) != 0;
 	}
 
 	/**
@@ -881,7 +863,7 @@ public class Buffer
 	 * Get the amount of memory blocks that this buffer has. This amount is never
 	 * larger than what gst_buffer_get_max_memory() returns.
 	 *
-	 * Return: the number of memory blocks this buffer is made of.
+	 * Return: the amount of memory block in this buffer.
 	 */
 	public uint nMemory()
 	{
@@ -1043,21 +1025,6 @@ public class Buffer
 	}
 
 	/**
-	 * Sets one or more buffer flags on a buffer.
-	 *
-	 * Params:
-	 *     flags = the #GstBufferFlags to set.
-	 *
-	 * Return: %TRUE if @flags were successfully set on buffer.
-	 *
-	 * Since: 1.10
-	 */
-	public bool setFlags(GstBufferFlags flags)
-	{
-		return gst_buffer_set_flags(gstBuffer, flags) != 0;
-	}
-
-	/**
 	 * Set the total size of the memory blocks in @buffer.
 	 *
 	 * Params:
@@ -1077,21 +1044,6 @@ public class Buffer
 	public void unmap(GstMapInfo* info)
 	{
 		gst_buffer_unmap(gstBuffer, info);
-	}
-
-	/**
-	 * Clears one or more buffer flags.
-	 *
-	 * Params:
-	 *     flags = the #GstBufferFlags to clear
-	 *
-	 * Return: true if @flags is successfully cleared from buffer.
-	 *
-	 * Since: 1.10
-	 */
-	public bool unsetFlags(GstBufferFlags flags)
-	{
-		return gst_buffer_unset_flags(gstBuffer, flags) != 0;
 	}
 
 	/**

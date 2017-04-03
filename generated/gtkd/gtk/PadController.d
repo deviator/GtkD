@@ -39,12 +39,12 @@ public  import gtkc.gtktypes;
  * #GtkPadController is an event controller for the pads found in drawing
  * tablets (The collection of buttons and tactile sensors often found around
  * the stylus-sensitive area).
- * 
+ *
  * These buttons and sensors have no implicit meaning, and by default they
  * perform no action, this event controller is provided to map those to
  * #GAction objects, thus letting the application give those a more semantic
  * meaning.
- * 
+ *
  * Buttons and sensors are not constrained to triggering a single action, some
  * %GDK_SOURCE_TABLET_PAD devices feature multiple "modes", all these input
  * elements have one current mode, which may determine the final action
@@ -52,12 +52,12 @@ public  import gtkc.gtktypes;
  * all elements in a group share the same current mode, but different groups
  * may have different modes. See gdk_device_pad_get_n_groups() and
  * gdk_device_pad_get_group_n_modes().
- * 
+ *
  * Each of the actions that a given button/strip/ring performs for a given
  * mode is defined by #GtkPadActionEntry, it contains an action name that
  * will be looked up in the given #GActionGroup and activated whenever the
  * specified input element and mode are triggered.
- * 
+ *
  * A simple example of #GtkPadController usage, assigning button 1 in all
  * modes and pad devices to an "invert-selection" action:
  * |[
@@ -65,7 +65,7 @@ public  import gtkc.gtktypes;
  * { GTK_PAD_ACTION_BUTTON, 1, -1, "Invert selection", "pad-actions.invert-selection" },
  * …
  * };
- * 
+ *
  * …
  * action_group = g_simple_action_group_new ();
  * action = g_simple_action_new ("pad-actions.invert-selection", NULL);
@@ -74,11 +74,12 @@ public  import gtkc.gtktypes;
  * …
  * pad_controller = gtk_pad_controller_new (window, action_group, NULL);
  * ]|
- * 
+ *
  * The actions belonging to rings/strips will be activated with a parameter
  * of type %G_VARIANT_TYPE_DOUBLE bearing the value of the given axis, it
  * is required that those are made stateful and accepting this #GVariantType.
  */
+/+
 public class PadController : EventController
 {
 	/** the main Gtk struct */
@@ -143,12 +144,12 @@ public class PadController : EventController
 	public this(Window window, ActionGroupIF group, Device pad)
 	{
 		auto p = gtk_pad_controller_new((window is null) ? null : window.getWindowStruct(), (group is null) ? null : group.getActionGroupStruct(), (pad is null) ? null : pad.getDeviceStruct());
-		
+
 		if(p is null)
 		{
 			throw new ConstructionException("null returned by new");
 		}
-		
+
 		this(cast(GtkPadController*) p, true);
 	}
 
@@ -192,3 +193,4 @@ public class PadController : EventController
 		gtk_pad_controller_set_action_entries(gtkPadController, entries.ptr, cast(int)entries.length);
 	}
 }
++/

@@ -306,12 +306,12 @@ code: start
 	public void setAccelsForAction(string detailedActionName, string[] accels)
 	{
 		char** accel;
-		
+
 		if (accels)
 			accel = Str.toStringzArray(accels);
 		else
 			accel = [cast(char*)null].ptr;
-		
+
 		gtk_application_set_accels_for_action(gtkApplication, Str.toStringz(detailedActionName), accel);
 	}
 code: end
@@ -1080,13 +1080,13 @@ code: start
 		static OnChangedDelegateWrapper[] listeners;
 		void delegate(ComboBoxText) dlg;
 		gulong handlerId;
-		
+
 		this(void delegate(ComboBoxText) dlg)
 		{
 			this.dlg = dlg;
 			this.listeners ~= this;
 		}
-		
+
 		void remove(OnChangedDelegateWrapper source)
 		{
 			foreach(index, wrapper; listeners)
@@ -1123,12 +1123,12 @@ code: start
 			connectFlags);
 		return wrapper.handlerId;
 	}
-	
+
 	extern(C) static void callBackChanged(GtkComboBoxText* comboboxTextStruct, OnChangedDelegateWrapper wrapper)
 	{
 		wrapper.dlg(wrapper.outer);
 	}
-	
+
 	extern(C) static void callBackChangedDestroy(OnChangedDelegateWrapper wrapper, GClosure* closure)
 	{
 		wrapper.remove(wrapper);
@@ -1139,13 +1139,13 @@ code: start
 		static OnFormatEntryTextDelegateWrapper[] listeners;
 		string delegate(string, ComboBoxText) dlg;
 		gulong handlerId;
-		
+
 		this(string delegate(string, ComboBoxText) dlg)
 		{
 			this.dlg = dlg;
 			this.listeners ~= this;
 		}
-		
+
 		void remove(OnFormatEntryTextDelegateWrapper source)
 		{
 			foreach(index, wrapper; listeners)
@@ -1214,12 +1214,12 @@ code: start
 			connectFlags);
 		return wrapper.handlerId;
 	}
-	
+
 	extern(C) static string callBackFormatEntryText(GtkComboBoxText* comboboxStructText, char* path,OnFormatEntryTextDelegateWrapper wrapper)
 	{
 		return wrapper.dlg(Str.toString(path), wrapper.outer);
 	}
-	
+
 	extern(C) static void callBackFormatEntryTextDestroy(OnFormatEntryTextDelegateWrapper wrapper, GClosure* closure)
 	{
 		wrapper.remove(wrapper);
@@ -1230,13 +1230,13 @@ code: start
 		static OnMoveActiveDelegateWrapper[] listeners;
 		void delegate(GtkScrollType, ComboBoxText) dlg;
 		gulong handlerId;
-		
+
 		this(void delegate(GtkScrollType, ComboBoxText) dlg)
 		{
 			this.dlg = dlg;
 			this.listeners ~= this;
 		}
-		
+
 		void remove(OnMoveActiveDelegateWrapper source)
 		{
 			foreach(index, wrapper; listeners)
@@ -1273,12 +1273,12 @@ code: start
 			connectFlags);
 		return wrapper.handlerId;
 	}
-	
+
 	extern(C) static void callBackMoveActive(GtkComboBoxText* comboboxTextStruct, GtkScrollType scrollType,OnMoveActiveDelegateWrapper wrapper)
 	{
 		wrapper.dlg(scrollType, wrapper.outer);
 	}
-	
+
 	extern(C) static void callBackMoveActiveDestroy(OnMoveActiveDelegateWrapper wrapper, GClosure* closure)
 	{
 		wrapper.remove(wrapper);
@@ -1289,13 +1289,13 @@ code: start
 		static OnPopdownDelegateWrapper[] listeners;
 		bool delegate(ComboBoxText) dlg;
 		gulong handlerId;
-		
+
 		this(bool delegate(ComboBoxText) dlg)
 		{
 			this.dlg = dlg;
 			this.listeners ~= this;
 		}
-		
+
 		void remove(OnPopdownDelegateWrapper source)
 		{
 			foreach(index, wrapper; listeners)
@@ -1331,12 +1331,12 @@ code: start
 			connectFlags);
 		return wrapper.handlerId;
 	}
-	
+
 	extern(C) static int callBackPopdown(GtkComboBoxText* comboboxTextStruct,OnPopdownDelegateWrapper wrapper)
 	{
 		return wrapper.dlg(wrapper.outer);
 	}
-	
+
 	extern(C) static void callBackPopdownDestroy(OnPopdownDelegateWrapper wrapper, GClosure* closure)
 	{
 		wrapper.remove(wrapper);
@@ -1347,13 +1347,13 @@ code: start
 		static OnPopupDelegateWrapper[] listeners;
 		void delegate(ComboBoxText) dlg;
 		gulong handlerId;
-		
+
 		this(void delegate(ComboBoxText) dlg)
 		{
 			this.dlg = dlg;
 			this.listeners ~= this;
 		}
-		
+
 		void remove(OnPopupDelegateWrapper source)
 		{
 			foreach(index, wrapper; listeners)
@@ -1389,12 +1389,12 @@ code: start
 			connectFlags);
 		return wrapper.handlerId;
 	}
-	
+
 	extern(C) static void callBackPopup(GtkComboBoxText* comboboxTextStruct,OnPopupDelegateWrapper wrapper)
 	{
 		wrapper.dlg(wrapper.outer);
 	}
-	
+
 	extern(C) static void callBackPopupDestroy(OnPopupDelegateWrapper wrapper, GClosure* closure)
 	{
 		wrapper.remove(wrapper);
@@ -5299,13 +5299,13 @@ code: start
 		static ScopedOnDrawDelegateWrapper[] listeners;
 		bool delegate(Scoped!Context, Widget) dlg;
 		gulong handlerId;
-		
+
 		this(bool delegate(Scoped!Context, Widget) dlg)
 		{
 			this.dlg = dlg;
 			this.listeners ~= this;
 		}
-		
+
 		void remove(ScopedOnDrawDelegateWrapper source)
 		{
 			foreach(index, wrapper; listeners)
@@ -5359,12 +5359,12 @@ code: start
 			connectFlags);
 		return wrapper.handlerId;
 	}
-	
+
 	extern(C) static int callBackScopedDraw(GtkWidget* widgetStruct, cairo_t* cr, ScopedOnDrawDelegateWrapper wrapper)
 	{
 		return wrapper.dlg(scoped!Context(cr), wrapper.outer);
 	}
-	
+
 	extern(C) static void callBackDrawScopedDestroy(ScopedOnDrawDelegateWrapper wrapper, GClosure* closure)
 	{
 		wrapper.remove(wrapper);
@@ -5375,13 +5375,13 @@ code: start
 		static OnDrawDelegateWrapper[] listeners;
 		bool delegate(Context, Widget) dlg;
 		gulong handlerId;
-		
+
 		this(bool delegate(Context, Widget) dlg)
 		{
 			this.dlg = dlg;
 			this.listeners ~= this;
 		}
-		
+
 		void remove(OnDrawDelegateWrapper source)
 		{
 			foreach(index, wrapper; listeners)
@@ -5435,12 +5435,12 @@ code: start
 			connectFlags);
 		return wrapper.handlerId;
 	}
-	
+
 	extern(C) static int callBackDraw(GtkWidget* widgetStruct, cairo_t* cr,OnDrawDelegateWrapper wrapper)
 	{
 		return wrapper.dlg(new Context(cr), wrapper.outer);
 	}
-	
+
 	extern(C) static void callBackDrawDestroy(OnDrawDelegateWrapper wrapper, GClosure* closure)
 	{
 		wrapper.remove(wrapper);
@@ -5676,4 +5676,3 @@ move: cairo_should_draw_window Widget
 move: cairo_transform_to_window Widget
 move: distribute_natural_allocation Widget
 
-move: show_uri_on_window Window

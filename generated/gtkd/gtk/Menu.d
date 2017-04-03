@@ -25,10 +25,7 @@
 module gtk.Menu;
 
 private import gdk.Device;
-private import gdk.Event;
-private import gdk.MonitorG;
 private import gdk.Screen;
-private import gdk.Window;
 private import gio.MenuModel;
 private import glib.ConstructionException;
 private import glib.ListG;
@@ -449,19 +446,6 @@ public class Menu : MenuShell
 	}
 
 	/**
-	 * Places @menu on the given monitor.
-	 *
-	 * Params:
-	 *     monitor = the monitor to place the menu on
-	 *
-	 * Since: 3.22
-	 */
-	public void placeOnMonitor(MonitorG monitor)
-	{
-		gtk_menu_place_on_monitor(gtkMenu, (monitor is null) ? null : monitor.getMonitorGStruct());
-	}
-
-	/**
 	 * Removes the menu from the screen.
 	 */
 	public void popdown()
@@ -490,14 +474,6 @@ public class Menu : MenuShell
 	 * Only if no such event is available, gtk_get_current_event_time() can
 	 * be used instead.
 	 *
-	 * Note that this function does not work very well on GDK backends that
-	 * do not have global coordinates, such as Wayland or Mir. You should
-	 * probably use one of the gtk_menu_popup_at_ variants, which do not
-	 * have this problem.
-	 *
-	 * Deprecated: Please use gtk_menu_popup_at_widget(),
-	 * gtk_menu_popup_at_pointer(). or gtk_menu_popup_at_rect() instead
-	 *
 	 * Params:
 	 *     parentMenuShell = the menu shell containing the
 	 *         triggering menu item, or %NULL
@@ -512,102 +488,6 @@ public class Menu : MenuShell
 	public void popup(Widget parentMenuShell, Widget parentMenuItem, GtkMenuPositionFunc func, void* data, uint button, uint activateTime)
 	{
 		gtk_menu_popup(gtkMenu, (parentMenuShell is null) ? null : parentMenuShell.getWidgetStruct(), (parentMenuItem is null) ? null : parentMenuItem.getWidgetStruct(), func, data, button, activateTime);
-	}
-
-	/**
-	 * Displays @menu and makes it available for selection.
-	 *
-	 * See gtk_menu_popup_at_widget () to pop up a menu at a widget.
-	 * gtk_menu_popup_at_rect () also allows you to position a menu at an arbitrary
-	 * rectangle.
-	 *
-	 * @menu will be positioned at the pointer associated with @trigger_event.
-	 *
-	 * Properties that influence the behaviour of this function are
-	 * #GtkMenu:anchor-hints, #GtkMenu:rect-anchor-dx, #GtkMenu:rect-anchor-dy, and
-	 * #GtkMenu:menu-type-hint. Connect to the #GtkMenu::popped-up signal to find
-	 * out how it was actually positioned.
-	 *
-	 * Params:
-	 *     triggerEvent = the #GdkEvent that initiated this request or
-	 *         %NULL if it's the current event
-	 *
-	 * Since: 3.22
-	 */
-	public void popupAtPointer(Event triggerEvent)
-	{
-		gtk_menu_popup_at_pointer(gtkMenu, (triggerEvent is null) ? null : triggerEvent.getEventStruct());
-	}
-
-	/**
-	 * Displays @menu and makes it available for selection.
-	 *
-	 * See gtk_menu_popup_at_widget () and gtk_menu_popup_at_pointer (), which
-	 * handle more common cases for popping up menus.
-	 *
-	 * @menu will be positioned at @rect, aligning their anchor points. @rect is
-	 * relative to the top-left corner of @rect_window. @rect_anchor and
-	 * @menu_anchor determine anchor points on @rect and @menu to pin together.
-	 * @menu can optionally be offset by #GtkMenu:rect-anchor-dx and
-	 * #GtkMenu:rect-anchor-dy.
-	 *
-	 * Anchors should be specified under the assumption that the text direction is
-	 * left-to-right; they will be flipped horizontally automatically if the text
-	 * direction is right-to-left.
-	 *
-	 * Other properties that influence the behaviour of this function are
-	 * #GtkMenu:anchor-hints and #GtkMenu:menu-type-hint. Connect to the
-	 * #GtkMenu::popped-up signal to find out how it was actually positioned.
-	 *
-	 * Params:
-	 *     rectWindow = the #GdkWindow @rect is relative to
-	 *     rect = the #GdkRectangle to align @menu with
-	 *     rectAnchor = the point on @rect to align with @menu's anchor point
-	 *     menuAnchor = the point on @menu to align with @rect's anchor point
-	 *     triggerEvent = the #GdkEvent that initiated this request or
-	 *         %NULL if it's the current event
-	 *
-	 * Since: 3.22
-	 */
-	public void popupAtRect(Window rectWindow, GdkRectangle* rect, GdkGravity rectAnchor, GdkGravity menuAnchor, Event triggerEvent)
-	{
-		gtk_menu_popup_at_rect(gtkMenu, (rectWindow is null) ? null : rectWindow.getWindowStruct(), rect, rectAnchor, menuAnchor, (triggerEvent is null) ? null : triggerEvent.getEventStruct());
-	}
-
-	/**
-	 * Displays @menu and makes it available for selection.
-	 *
-	 * See gtk_menu_popup_at_pointer () to pop up a menu at the master pointer.
-	 * gtk_menu_popup_at_rect () also allows you to position a menu at an arbitrary
-	 * rectangle.
-	 *
-	 * ![](popup-anchors.png)
-	 *
-	 * @menu will be positioned at @widget, aligning their anchor points.
-	 * @widget_anchor and @menu_anchor determine anchor points on @widget and @menu
-	 * to pin together. @menu can optionally be offset by #GtkMenu:rect-anchor-dx
-	 * and #GtkMenu:rect-anchor-dy.
-	 *
-	 * Anchors should be specified under the assumption that the text direction is
-	 * left-to-right; they will be flipped horizontally automatically if the text
-	 * direction is right-to-left.
-	 *
-	 * Other properties that influence the behaviour of this function are
-	 * #GtkMenu:anchor-hints and #GtkMenu:menu-type-hint. Connect to the
-	 * #GtkMenu::popped-up signal to find out how it was actually positioned.
-	 *
-	 * Params:
-	 *     widget = the #GtkWidget to align @menu with
-	 *     widgetAnchor = the point on @widget to align with @menu's anchor point
-	 *     menuAnchor = the point on @menu to align with @widget's anchor point
-	 *     triggerEvent = the #GdkEvent that initiated this request or
-	 *         %NULL if it's the current event
-	 *
-	 * Since: 3.22
-	 */
-	public void popupAtWidget(Widget widget, GdkGravity widgetAnchor, GdkGravity menuAnchor, Event triggerEvent)
-	{
-		gtk_menu_popup_at_widget(gtkMenu, (widget is null) ? null : widget.getWidgetStruct(), widgetAnchor, menuAnchor, (triggerEvent is null) ? null : triggerEvent.getEventStruct());
 	}
 
 	/**
@@ -630,14 +510,6 @@ public class Menu : MenuShell
 	 * a mouse click or key press) that caused the initiation of the popup.
 	 * Only if no such event is available, gtk_get_current_event_time() can
 	 * be used instead.
-	 *
-	 * Note that this function does not work very well on GDK backends that
-	 * do not have global coordinates, such as Wayland or Mir. You should
-	 * probably use one of the gtk_menu_popup_at_ variants, which do not
-	 * have this problem.
-	 *
-	 * Deprecated: Please use gtk_menu_popup_at_widget(),
-	 * gtk_menu_popup_at_pointer(). or gtk_menu_popup_at_rect() instead
 	 *
 	 * Params:
 	 *     device = a #GdkDevice
@@ -743,7 +615,7 @@ public class Menu : MenuShell
 
 	/**
 	 * Informs GTK+ on which monitor a menu should be popped up.
-	 * See gdk_monitor_get_geometry().
+	 * See gdk_screen_get_monitor_geometry().
 	 *
 	 * This function should be called from a #GtkMenuPositionFunc
 	 * if the menu should not appear on the same monitor as the pointer.
@@ -867,89 +739,6 @@ public class Menu : MenuShell
 	}
 	
 	extern(C) static void callBackMoveScrollDestroy(OnMoveScrollDelegateWrapper wrapper, GClosure* closure)
-	{
-		wrapper.remove(wrapper);
-	}
-
-	protected class OnPoppedUpDelegateWrapper
-	{
-		static OnPoppedUpDelegateWrapper[] listeners;
-		void delegate(void*, void*, bool, bool, Menu) dlg;
-		gulong handlerId;
-		
-		this(void delegate(void*, void*, bool, bool, Menu) dlg)
-		{
-			this.dlg = dlg;
-			this.listeners ~= this;
-		}
-		
-		void remove(OnPoppedUpDelegateWrapper source)
-		{
-			foreach(index, wrapper; listeners)
-			{
-				if (wrapper.handlerId == source.handlerId)
-				{
-					listeners[index] = null;
-					listeners = std.algorithm.remove(listeners, index);
-					break;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Emitted when the position of @menu is finalized after being popped up
-	 * using gtk_menu_popup_at_rect (), gtk_menu_popup_at_widget (), or
-	 * gtk_menu_popup_at_pointer ().
-	 *
-	 * @menu might be flipped over the anchor rectangle in order to keep it
-	 * on-screen, in which case @flipped_x and @flipped_y will be set to %TRUE
-	 * accordingly.
-	 *
-	 * @flipped_rect is the ideal position of @menu after any possible flipping,
-	 * but before any possible sliding. @final_rect is @flipped_rect, but possibly
-	 * translated in the case that flipping is still ineffective in keeping @menu
-	 * on-screen.
-	 *
-	 * ![](popup-slide.png)
-	 *
-	 * The blue menu is @menu's ideal position, the green menu is @flipped_rect,
-	 * and the red menu is @final_rect.
-	 *
-	 * See gtk_menu_popup_at_rect (), gtk_menu_popup_at_widget (),
-	 * gtk_menu_popup_at_pointer (), #GtkMenu:anchor-hints,
-	 * #GtkMenu:rect-anchor-dx, #GtkMenu:rect-anchor-dy, and
-	 * #GtkMenu:menu-type-hint.
-	 *
-	 * Params:
-	 *     flippedRect = the position of @menu after any possible
-	 *         flipping or %NULL if the backend can't obtain it
-	 *     finalRect = the final position of @menu or %NULL if the
-	 *         backend can't obtain it
-	 *     flippedX = %TRUE if the anchors were flipped horizontally
-	 *     flippedY = %TRUE if the anchors were flipped vertically
-	 *
-	 * Since: 3.22
-	 */
-	gulong addOnPoppedUp(void delegate(void*, void*, bool, bool, Menu) dlg, ConnectFlags connectFlags=cast(ConnectFlags)0)
-	{
-		auto wrapper = new OnPoppedUpDelegateWrapper(dlg);
-		wrapper.handlerId = Signals.connectData(
-			this,
-			"popped-up",
-			cast(GCallback)&callBackPoppedUp,
-			cast(void*)wrapper,
-			cast(GClosureNotify)&callBackPoppedUpDestroy,
-			connectFlags);
-		return wrapper.handlerId;
-	}
-	
-	extern(C) static void callBackPoppedUp(GtkMenu* menuStruct, void* flippedRect, void* finalRect, bool flippedX, bool flippedY, OnPoppedUpDelegateWrapper wrapper)
-	{
-		wrapper.dlg(flippedRect, finalRect, flippedX, flippedY, wrapper.outer);
-	}
-	
-	extern(C) static void callBackPoppedUpDestroy(OnPoppedUpDelegateWrapper wrapper, GClosure* closure)
 	{
 		wrapper.remove(wrapper);
 	}

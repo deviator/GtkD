@@ -119,9 +119,9 @@ public template ComponentT(TStruct)
 	 *     coordType = specifies whether the coordinates are relative to the screen
 	 *         or to the components top level window
 	 */
-	public void getExtents(out int x, out int y, out int width, out int height, AtkCoordType coordType)
+	public void getExtents(int* x, int* y, int* width, int* height, AtkCoordType coordType)
 	{
-		atk_component_get_extents(getComponentStruct(), &x, &y, &width, &height, coordType);
+		atk_component_get_extents(getComponentStruct(), x, y, width, height, coordType);
 	}
 
 	/**
@@ -159,9 +159,9 @@ public template ComponentT(TStruct)
 	 *     coordType = specifies whether the coordinates are relative to the screen
 	 *         or to the components top level window
 	 */
-	public void getPosition(out int x, out int y, AtkCoordType coordType)
+	public void getPosition(int* x, int* y, AtkCoordType coordType)
 	{
-		atk_component_get_position(getComponentStruct(), &x, &y, coordType);
+		atk_component_get_position(getComponentStruct(), x, y, coordType);
 	}
 
 	/**
@@ -173,9 +173,9 @@ public template ComponentT(TStruct)
 	 *     width = address of #gint to put width of @component
 	 *     height = address of #gint to put height of @component
 	 */
-	public void getSize(out int width, out int height)
+	public void getSize(int* width, int* height)
 	{
-		atk_component_get_size(getComponentStruct(), &width, &height);
+		atk_component_get_size(getComponentStruct(), width, height);
 	}
 
 	/**

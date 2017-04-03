@@ -507,12 +507,12 @@ code: start
 	public Window lookupForDisplay(Display display, uint window)
 	{
 		auto p = gdk_x11_window_lookup_for_display((display is null) ? null : display.getDisplayStruct(), window);
-		
+
 		if(p is null)
 		{
 			return null;
 		}
-		
+
 		return ObjectG.getDObject!(Window)(cast(GdkWindow*) p);
 	}
 code: end
@@ -535,7 +535,6 @@ move: cairo_set_source_pixbuf Cairo set_source_pixbuf
 move: cairo_set_source_rgba Cairo set_source_rgba
 move: cairo_set_source_window Cairo set_source_window
 move: cairo_surface_create_from_pixbuf Cairo surface_create_from_pixbuf
-move: cairo_get_drawing_context Cairo get_drawing_context
 
 move: disable_multidevice DeviceManager
 
@@ -597,7 +596,6 @@ move: pango_context_get Pango context_get
 move: pango_context_get_for_screen Pango context_get_for_screen
 move: pango_layout_get_clip_region Pango layout_get_clip_region
 move: pango_layout_line_get_clip_region Pango layout_line_get_clip_region
-move: pango_context_get_for_display Pango context_get_for_display
 
 move: pixbuf_get_from_surface Pixbuf get_from_surface
 move: pixbuf_get_from_window Pixbuf get_from_window

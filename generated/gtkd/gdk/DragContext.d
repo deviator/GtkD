@@ -375,9 +375,6 @@ public class DragContext : ObjectG
 	 * the drag and drop operation. See gdk_drag_context_manage_dnd()
 	 * for more information.
 	 *
-	 * Params:
-	 *     reason = The reason the context was cancelled
-	 *
 	 * Since: 3.20
 	 */
 	gulong addOnCancel(void delegate(GdkDragCancelReason, DragContext) dlg, ConnectFlags connectFlags=cast(ConnectFlags)0)
@@ -393,9 +390,9 @@ public class DragContext : ObjectG
 		return wrapper.handlerId;
 	}
 	
-	extern(C) static void callBackCancel(GdkDragContext* dragcontextStruct, GdkDragCancelReason reason, OnCancelDelegateWrapper wrapper)
+	extern(C) static void callBackCancel(GdkDragContext* dragcontextStruct, GdkDragCancelReason object, OnCancelDelegateWrapper wrapper)
 	{
-		wrapper.dlg(reason, wrapper.outer);
+		wrapper.dlg(object, wrapper.outer);
 	}
 	
 	extern(C) static void callBackCancelDestroy(OnCancelDelegateWrapper wrapper, GClosure* closure)

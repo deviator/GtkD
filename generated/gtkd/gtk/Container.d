@@ -538,7 +538,7 @@ public class Container : Widget
 	 * gtk_window_get_focus().
 	 *
 	 * Return: The child widget which will receive the
-	 *     focus inside @container when the @container is focused,
+	 *     focus inside @container when the @conatiner is focussed,
 	 *     or %NULL if none is set.
 	 *
 	 * Since: 2.14

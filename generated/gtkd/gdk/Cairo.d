@@ -28,11 +28,9 @@ private import cairo.Context;
 private import cairo.Region;
 private import cairo.Surface;
 private import gdk.Color;
-private import gdk.DrawingContext;
 private import gdk.RGBA;
 private import gdk.Window;
 private import gdkpixbuf.Pixbuf;
-private import gobject.ObjectG;
 private import gtkc.gdk;
 public  import gtkc.gdktypes;
 
@@ -44,17 +42,6 @@ public  import gtkc.gdktypes;
  *
  * Note that calling cairo_reset_clip() on the resulting #cairo_t will
  * produce undefined results, so avoid it at all costs.
- *
- * Typically, this function is used to draw on a #GdkWindow out of the paint
- * cycle of the toolkit; this should be avoided, as it breaks various assumptions
- * and optimizations.
- *
- * If you are drawing on a native #GdkWindow in response to a %GDK_EXPOSE event
- * you should use gdk_window_begin_draw_frame() and gdk_drawing_context_get_cairo_context()
- * instead. GTK will automatically do this for you when drawing a widget.
- *
- * Deprecated: Use gdk_window_begin_draw_frame() and
- * gdk_drawing_context_get_cairo_context() instead
  *
  * Params:
  *     window = a #GdkWindow
@@ -276,27 +263,4 @@ public Surface surfaceCreateFromPixbuf(Pixbuf pixbuf, int scale, Window forWindo
 	}
 	
 	return new Surface(cast(cairo_surface_t*) p);
-}
-
-/**
- * Retrieves the #GdkDrawingContext that created the Cairo
- * context @cr.
- *
- * Params:
- *     cr = a Cairo context
- *
- * Return: a #GdkDrawingContext, if any is set
- *
- * Since: 3.22
- */
-public DrawingContext getDrawingContext(Context cr)
-{
-	auto p = gdk_cairo_get_drawing_context((cr is null) ? null : cr.getContextStruct());
-	
-	if(p is null)
-	{
-		return null;
-	}
-	
-	return ObjectG.getDObject!(DrawingContext)(cast(GdkDrawingContext*) p);
 }

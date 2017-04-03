@@ -28,7 +28,6 @@ private import gdk.AppLaunchContext;
 private import gdk.Device;
 private import gdk.DeviceManager;
 private import gdk.Event;
-private import gdk.MonitorG;
 private import gdk.Screen;
 private import gdk.Seat;
 private import gdk.Window;
@@ -375,92 +374,6 @@ public class Display : ObjectG
 	}
 
 	/**
-	 * Gets a monitor associated with this display.
-	 *
-	 * Params:
-	 *     monitorNum = number of the monitor
-	 *
-	 * Return: the #GdkMonitor, or %NULL if
-	 *     @monitor_num is not a valid monitor number
-	 *
-	 * Since: 3.22
-	 */
-	public MonitorG getMonitor(int monitorNum)
-	{
-		auto p = gdk_display_get_monitor(gdkDisplay, monitorNum);
-		
-		if(p is null)
-		{
-			return null;
-		}
-		
-		return ObjectG.getDObject!(MonitorG)(cast(GdkMonitor*) p);
-	}
-
-	/**
-	 * Gets the monitor in which the point (@x, @y) is located,
-	 * or a nearby monitor if the point is not in any monitor.
-	 *
-	 * Params:
-	 *     x = the x coordinate of the point
-	 *     y = the y coordinate of the point
-	 *
-	 * Return: the monitor containing the point
-	 *
-	 * Since: 3.22
-	 */
-	public MonitorG getMonitorAtPoint(int x, int y)
-	{
-		auto p = gdk_display_get_monitor_at_point(gdkDisplay, x, y);
-		
-		if(p is null)
-		{
-			return null;
-		}
-		
-		return ObjectG.getDObject!(MonitorG)(cast(GdkMonitor*) p);
-	}
-
-	/**
-	 * Gets the monitor in which the largest area of @window
-	 * resides, or a monitor close to @window if it is outside
-	 * of all monitors.
-	 *
-	 * Params:
-	 *     window = a #GdkWindow
-	 *
-	 * Return: the monitor with the largest overlap with @window
-	 *
-	 * Since: 3.22
-	 */
-	public MonitorG getMonitorAtWindow(Window window)
-	{
-		auto p = gdk_display_get_monitor_at_window(gdkDisplay, (window is null) ? null : window.getWindowStruct());
-		
-		if(p is null)
-		{
-			return null;
-		}
-		
-		return ObjectG.getDObject!(MonitorG)(cast(GdkMonitor*) p);
-	}
-
-	/**
-	 * Gets the number of monitors that belong to @display.
-	 *
-	 * The returned number is valid until the next emission of the
-	 * #GdkDisplay::monitor-added or #GdkDisplay::monitor-removed signal.
-	 *
-	 * Return: the number of monitors
-	 *
-	 * Since: 3.22
-	 */
-	public int getNMonitors()
-	{
-		return gdk_display_get_n_monitors(gdkDisplay);
-	}
-
-	/**
 	 * Gets the number of screen managed by the @display.
 	 *
 	 * Deprecated: The number of screens is always 1.
@@ -509,31 +422,6 @@ public class Display : ObjectG
 		gdk_display_get_pointer(gdkDisplay, &outscreen, &x, &y, &mask);
 		
 		screen = ObjectG.getDObject!(Screen)(outscreen);
-	}
-
-	/**
-	 * Gets the primary monitor for the display.
-	 *
-	 * The primary monitor is considered the monitor where the “main desktop”
-	 * lives. While normal application windows typically allow the window
-	 * manager to place the windows, specialized desktop applications
-	 * such as panels should place themselves on the primary monitor.
-	 *
-	 * Return: the primary monitor, or %NULL if no primary
-	 *     monitor is configured by the user
-	 *
-	 * Since: 3.22
-	 */
-	public MonitorG getPrimaryMonitor()
-	{
-		auto p = gdk_display_get_primary_monitor(gdkDisplay);
-		
-		if(p is null)
-		{
-			return null;
-		}
-		
-		return ObjectG.getDObject!(MonitorG)(cast(GdkMonitor*) p);
 	}
 
 	/**
@@ -1035,122 +923,6 @@ public class Display : ObjectG
 	}
 	
 	extern(C) static void callBackClosedDestroy(OnClosedDelegateWrapper wrapper, GClosure* closure)
-	{
-		wrapper.remove(wrapper);
-	}
-
-	protected class OnMonitorAddedDelegateWrapper
-	{
-		static OnMonitorAddedDelegateWrapper[] listeners;
-		void delegate(MonitorG, Display) dlg;
-		gulong handlerId;
-		
-		this(void delegate(MonitorG, Display) dlg)
-		{
-			this.dlg = dlg;
-			this.listeners ~= this;
-		}
-		
-		void remove(OnMonitorAddedDelegateWrapper source)
-		{
-			foreach(index, wrapper; listeners)
-			{
-				if (wrapper.handlerId == source.handlerId)
-				{
-					listeners[index] = null;
-					listeners = std.algorithm.remove(listeners, index);
-					break;
-				}
-			}
-		}
-	}
-
-	/**
-	 * The ::monitor-added signal is emitted whenever a monitor is
-	 * added.
-	 *
-	 * Params:
-	 *     monitor = the monitor that was just added
-	 *
-	 * Since: 3.22
-	 */
-	gulong addOnMonitorAdded(void delegate(MonitorG, Display) dlg, ConnectFlags connectFlags=cast(ConnectFlags)0)
-	{
-		auto wrapper = new OnMonitorAddedDelegateWrapper(dlg);
-		wrapper.handlerId = Signals.connectData(
-			this,
-			"monitor-added",
-			cast(GCallback)&callBackMonitorAdded,
-			cast(void*)wrapper,
-			cast(GClosureNotify)&callBackMonitorAddedDestroy,
-			connectFlags);
-		return wrapper.handlerId;
-	}
-	
-	extern(C) static void callBackMonitorAdded(GdkDisplay* displayStruct, GdkMonitor* monitor, OnMonitorAddedDelegateWrapper wrapper)
-	{
-		wrapper.dlg(ObjectG.getDObject!(MonitorG)(monitor), wrapper.outer);
-	}
-	
-	extern(C) static void callBackMonitorAddedDestroy(OnMonitorAddedDelegateWrapper wrapper, GClosure* closure)
-	{
-		wrapper.remove(wrapper);
-	}
-
-	protected class OnMonitorRemovedDelegateWrapper
-	{
-		static OnMonitorRemovedDelegateWrapper[] listeners;
-		void delegate(MonitorG, Display) dlg;
-		gulong handlerId;
-		
-		this(void delegate(MonitorG, Display) dlg)
-		{
-			this.dlg = dlg;
-			this.listeners ~= this;
-		}
-		
-		void remove(OnMonitorRemovedDelegateWrapper source)
-		{
-			foreach(index, wrapper; listeners)
-			{
-				if (wrapper.handlerId == source.handlerId)
-				{
-					listeners[index] = null;
-					listeners = std.algorithm.remove(listeners, index);
-					break;
-				}
-			}
-		}
-	}
-
-	/**
-	 * The ::monitor-removed signal is emitted whenever a monitor is
-	 * removed.
-	 *
-	 * Params:
-	 *     monitor = the monitor that was just removed
-	 *
-	 * Since: 3.22
-	 */
-	gulong addOnMonitorRemoved(void delegate(MonitorG, Display) dlg, ConnectFlags connectFlags=cast(ConnectFlags)0)
-	{
-		auto wrapper = new OnMonitorRemovedDelegateWrapper(dlg);
-		wrapper.handlerId = Signals.connectData(
-			this,
-			"monitor-removed",
-			cast(GCallback)&callBackMonitorRemoved,
-			cast(void*)wrapper,
-			cast(GClosureNotify)&callBackMonitorRemovedDestroy,
-			connectFlags);
-		return wrapper.handlerId;
-	}
-	
-	extern(C) static void callBackMonitorRemoved(GdkDisplay* displayStruct, GdkMonitor* monitor, OnMonitorRemovedDelegateWrapper wrapper)
-	{
-		wrapper.dlg(ObjectG.getDObject!(MonitorG)(monitor), wrapper.outer);
-	}
-	
-	extern(C) static void callBackMonitorRemovedDestroy(OnMonitorRemovedDelegateWrapper wrapper, GClosure* closure)
 	{
 		wrapper.remove(wrapper);
 	}

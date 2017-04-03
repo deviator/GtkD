@@ -175,25 +175,6 @@ public interface FileChooserIF{
 
 
 	/**
-	 * Adds a 'choice' to the file chooser. This is typically implemented
-	 * as a combobox or, for boolean choices, as a checkbutton. You can select
-	 * a value using gtk_file_chooser_set_choice() before the dialog is shown,
-	 * and you can obtain the user-selected value in the ::response signal handler
-	 * using gtk_file_chooser_get_choice().
-	 *
-	 * Compare gtk_file_chooser_set_extra_widget().
-	 *
-	 * Params:
-	 *     id = id for the added choice
-	 *     label = user-visible label for the added choice
-	 *     options = ids for the options of the choice, or %NULL for a boolean choice
-	 *     optionLabels = user-visible labels for the options, must be the same length as @options
-	 *
-	 * Since: 3.22
-	 */
-	public void addChoice(string id, string label, string[] options, string[] optionLabels);
-
-	/**
 	 * Adds @filter to the list of filters that the user can select between.
 	 * When a filter is selected, only files that are passed by that
 	 * filter are displayed.
@@ -253,18 +234,6 @@ public interface FileChooserIF{
 	 * Since: 2.4
 	 */
 	public GtkFileChooserAction getFileChooserAction();
-
-	/**
-	 * Gets the currently selected option in the 'choice' with the given ID.
-	 *
-	 * Params:
-	 *     id = the ID of the choice to get
-	 *
-	 * Return: the ID of the currenly selected option
-	 *
-	 * Since: 3.22
-	 */
-	public string getChoice(string id);
 
 	/**
 	 * Gets whether file choser will offer to create new folders.
@@ -602,16 +571,6 @@ public interface FileChooserIF{
 	public ListSG listShortcutFolders();
 
 	/**
-	 * Removes a 'choice' that has been added with gtk_file_chooser_add_choice().
-	 *
-	 * Params:
-	 *     id = the ID of the choice to remove
-	 *
-	 * Since: 3.22
-	 */
-	public void removeChoice(string id);
-
-	/**
 	 * Removes @filter from the list of filters that the user can select between.
 	 *
 	 * Params:
@@ -720,19 +679,6 @@ public interface FileChooserIF{
 	 * Since: 2.4
 	 */
 	public void setFileChooserAction(GtkFileChooserAction action);
-
-	/**
-	 * Selects an option in a 'choice' that has been added with
-	 * gtk_file_chooser_add_choice(). For a boolean choice, the
-	 * possible options are "true" and "false".
-	 *
-	 * Params:
-	 *     id = the ID of the choice to set
-	 *     option = the ID of the option to select
-	 *
-	 * Since: 3.22
-	 */
-	public void setChoice(string id, string option);
 
 	/**
 	 * Sets whether file choser will offer to create new folders.

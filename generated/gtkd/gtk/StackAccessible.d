@@ -30,6 +30,7 @@ public  import gtkc.gtktypes;
 
 
 /** */
+/+
 public class StackAccessible : ContainerAccessible
 {
 	/** the main Gtk struct */
@@ -69,3 +70,4 @@ public class StackAccessible : ContainerAccessible
 		return gtk_stack_accessible_get_type();
 	}
 }
++/

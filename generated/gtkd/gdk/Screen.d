@@ -116,8 +116,6 @@ public class Screen : ObjectG
 	 * size is in ”application pixels”, not in ”device pixels” (see
 	 * gdk_screen_get_monitor_scale_factor()).
 	 *
-	 * Deprecated: Use per-monitor information
-	 *
 	 * Return: the height of the default screen in pixels.
 	 */
 	public static int height()
@@ -128,8 +126,6 @@ public class Screen : ObjectG
 	/**
 	 * Returns the height of the default screen in millimeters.
 	 * Note that on many X servers this value will not be correct.
-	 *
-	 * Deprecated: Use per-monitor information
 	 *
 	 * Return: the height of the default screen in millimeters,
 	 *     though it is not always correct.
@@ -144,8 +140,6 @@ public class Screen : ObjectG
 	 * size is in ”application pixels”, not in ”device pixels” (see
 	 * gdk_screen_get_monitor_scale_factor()).
 	 *
-	 * Deprecated: Use per-monitor information
-	 *
 	 * Return: the width of the default screen in pixels.
 	 */
 	public static int width()
@@ -156,8 +150,6 @@ public class Screen : ObjectG
 	/**
 	 * Returns the width of the default screen in millimeters.
 	 * Note that on many X servers this value will not be correct.
-	 *
-	 * Deprecated: Use per-monitor information
 	 *
 	 * Return: the width of the default screen in millimeters,
 	 *     though it is not always correct.
@@ -244,8 +236,6 @@ public class Screen : ObjectG
 	 * ”application pixels”, not in ”device pixels” (see
 	 * gdk_screen_get_monitor_scale_factor()).
 	 *
-	 * Deprecated: Use per-monitor information instead
-	 *
 	 * Return: the height of @screen in pixels.
 	 *
 	 * Since: 2.2
@@ -262,8 +252,6 @@ public class Screen : ObjectG
 	 * has multiple monitors of different resolution. It is recommended
 	 * to use the monitor dimensions instead.
 	 *
-	 * Deprecated: Use per-monitor information instead
-	 *
 	 * Return: the heigth of @screen in millimeters.
 	 *
 	 * Since: 2.2
@@ -275,8 +263,6 @@ public class Screen : ObjectG
 
 	/**
 	 * Returns the monitor number in which the point (@x,@y) is located.
-	 *
-	 * Deprecated: Use gdk_display_get_monitor_at_point() instead
 	 *
 	 * Params:
 	 *     x = the x coordinate in the virtual screen.
@@ -295,8 +281,6 @@ public class Screen : ObjectG
 	/**
 	 * Returns the number of the monitor in which the largest area of the
 	 * bounding rectangle of @window resides.
-	 *
-	 * Deprecated: Use gdk_display_get_monitor_at_window() instead
 	 *
 	 * Params:
 	 *     window = a #GdkWindow
@@ -324,8 +308,6 @@ public class Screen : ObjectG
 	 * Note that the size of the entire screen area can be retrieved via
 	 * gdk_screen_get_width() and gdk_screen_get_height().
 	 *
-	 * Deprecated: Use gdk_monitor_get_geometry() instead
-	 *
 	 * Params:
 	 *     monitorNum = the monitor number
 	 *     dest = a #GdkRectangle to be filled with
@@ -340,8 +322,6 @@ public class Screen : ObjectG
 
 	/**
 	 * Gets the height in millimeters of the specified monitor.
-	 *
-	 * Deprecated: Use gdk_monitor_get_height_mm() instead
 	 *
 	 * Params:
 	 *     monitorNum = number of the monitor, between 0 and gdk_screen_get_n_monitors (screen)
@@ -359,8 +339,6 @@ public class Screen : ObjectG
 	 * Returns the output name of the specified monitor.
 	 * Usually something like VGA, DVI, or TV, not the actual
 	 * product name of the display device.
-	 *
-	 * Deprecated: Use gdk_monitor_get_model() instead
 	 *
 	 * Params:
 	 *     monitorNum = number of the monitor, between 0 and gdk_screen_get_n_monitors (screen)
@@ -387,8 +365,6 @@ public class Screen : ObjectG
 	 * particular monitor, but most of the time you’re drawing to a window
 	 * where it is better to use gdk_window_get_scale_factor() instead.
 	 *
-	 * Deprecated: Use gdk_monitor_get_scale_factor() instead
-	 *
 	 * Params:
 	 *     monitorNum = number of the monitor, between 0 and gdk_screen_get_n_monitors (screen)
 	 *
@@ -403,8 +379,6 @@ public class Screen : ObjectG
 
 	/**
 	 * Gets the width in millimeters of the specified monitor, if available.
-	 *
-	 * Deprecated: Use gdk_monitor_get_width_mm() instead
 	 *
 	 * Params:
 	 *     monitorNum = number of the monitor, between 0 and gdk_screen_get_n_monitors (screen)
@@ -435,8 +409,6 @@ public class Screen : ObjectG
 	 * Monitor numbers start at 0. To obtain the number of monitors of
 	 * @screen, use gdk_screen_get_n_monitors().
 	 *
-	 * Deprecated: Use gdk_monitor_get_workarea() instead
-	 *
 	 * Params:
 	 *     monitorNum = the monitor number
 	 *     dest = a #GdkRectangle to be filled with
@@ -451,8 +423,6 @@ public class Screen : ObjectG
 
 	/**
 	 * Returns the number of monitors which @screen consists of.
-	 *
-	 * Deprecated: Use gdk_display_get_n_monitors() instead
 	 *
 	 * Return: number of monitors which @screen consists of
 	 *
@@ -485,8 +455,6 @@ public class Screen : ObjectG
 	 *
 	 * If no primary monitor is configured by the user, the return value
 	 * will be 0, defaulting to the first monitor.
-	 *
-	 * Deprecated: Use gdk_display_get_primary_monitor() instead
 	 *
 	 * Return: An integer index for the primary monitor, or 0 if none is configured.
 	 *
@@ -634,8 +602,6 @@ public class Screen : ObjectG
 	 * ”application pixels”, not in ”device pixels” (see
 	 * gdk_screen_get_monitor_scale_factor()).
 	 *
-	 * Deprecated: Use per-monitor information instead
-	 *
 	 * Return: the width of @screen in pixels.
 	 *
 	 * Since: 2.2
@@ -651,8 +617,6 @@ public class Screen : ObjectG
 	 * Note that this value is somewhat ill-defined when the screen
 	 * has multiple monitors of different resolution. It is recommended
 	 * to use the monitor dimensions instead.
-	 *
-	 * Deprecated: Use per-monitor information instead
 	 *
 	 * Return: the width of @screen in millimeters.
 	 *

@@ -359,8 +359,8 @@ public class InfoBar : Box
 
 	/**
 	 * Sets the message type of the message area.
-	 *
-	 * GTK+ uses this type to determine how the message is displayed.
+	 * GTK+ uses this type to determine what color to use
+	 * when drawing the message area.
 	 *
 	 * Params:
 	 *     messageType = a #GtkMessageType

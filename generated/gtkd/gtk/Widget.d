@@ -1292,7 +1292,7 @@ public class Widget : ObjectG, ImplementorIF, BuildableIF
 		 * It's important to notice that gtk_widget_destroy() will only cause
 		 * the @widget to be finalized if no additional references, acquired
 		 * using g_object_ref(), are held on it. In case additional references
-		 * are in place, the @widget will be in an "inert" state after calling
+		 * are in place, the @widget will be in an "inhert" state after calling
 		 * this function; @widget will still point to valid memory, allowing you
 		 * to release the references you hold, but you may not query the widget's
 		 * own state.
@@ -3775,8 +3775,6 @@ public class Widget : ObjectG, ImplementorIF, BuildableIF
 		 * in the future if used on a widget that has a composited
 		 * window in its hierarchy (as set by gdk_window_set_composited()).
 		 *
-		 * Deprecated: Use gdk_screen_is_composited() instead.
-		 *
 		 * Return: %TRUE if the widget can rely on its alpha
 		 *     channel being drawn correctly.
 		 *
@@ -3978,6 +3976,10 @@ public class Widget : ObjectG, ImplementorIF, BuildableIF
 
 		/**
 		 * Emits the #GtkWidget::mnemonic-activate signal.
+		 *
+		 * The default handler for this signal activates the @widget if
+		 * @group_cycling is %FALSE, and just grabs the focus if @group_cycling
+		 * is %TRUE.
 		 *
 		 * Params:
 		 *     groupCycling = %TRUE if there are other widgets with the same mnemonic
@@ -4695,11 +4697,6 @@ public class Widget : ObjectG, ImplementorIF, BuildableIF
 		 * To cause the redraw to be done immediately, follow that call
 		 * with a call to gdk_window_process_updates().
 		 *
-		 * Deprecated: Application and widget code should not handle
-		 * expose events directly; invalidation should use the #GtkWidget
-		 * API, and drawing should only happen inside #GtkWidget::draw
-		 * implementations
-		 *
 		 * Params:
 		 *     event = a expose #GdkEvent
 		 *
@@ -4984,10 +4981,10 @@ public class Widget : ObjectG, ImplementorIF, BuildableIF
 		/**
 		 * Widgets are double buffered by default; you can use this function
 		 * to turn off the buffering. “Double buffered” simply means that
-		 * gdk_window_begin_draw_frame() and gdk_window_end_draw_frame() are called
+		 * gdk_window_begin_paint_region() and gdk_window_end_paint() are called
 		 * automatically around expose events sent to the
-		 * widget. gdk_window_begin_draw_frame() diverts all drawing to a widget's
-		 * window to an offscreen buffer, and gdk_window_end_draw_frame() draws the
+		 * widget. gdk_window_begin_paint_region() diverts all drawing to a widget's
+		 * window to an offscreen buffer, and gdk_window_end_paint() draws the
 		 * buffer to the screen. The result is that users see the window
 		 * update in one smooth step, and don’t see individual graphics
 		 * primitives being rendered.
@@ -4999,7 +4996,7 @@ public class Widget : ObjectG, ImplementorIF, BuildableIF
 		 * Note: if you turn off double-buffering, you have to handle
 		 * expose events, since even the clearing to the background color or
 		 * pixmap will not happen automatically (as it is done in
-		 * gdk_window_begin_draw_frame()).
+		 * gdk_window_begin_paint_region()).
 		 *
 		 * In 3.10 GTK and GDK have been restructured for translucent drawing. Since
 		 * then expose events for double-buffered widgets are culled into a single
@@ -6470,8 +6467,6 @@ public class Widget : ObjectG, ImplementorIF, BuildableIF
 		 * The ::composited-changed signal is emitted when the composited
 		 * status of @widgets screen changes.
 		 * See gdk_screen_is_composited().
-		 *
-		 * Deprecated: Use GdkScreen::composited-changed instead.
 		 */
 		gulong addOnCompositedChanged(void delegate(Widget) dlg, ConnectFlags connectFlags=cast(ConnectFlags)0)
 		{
@@ -9271,12 +9266,6 @@ public class Widget : ObjectG, ImplementorIF, BuildableIF
 		}
 
 		/**
-		 * The default handler for this signal activates @widget if @group_cycling
-		 * is %FALSE, or just makes @widget grab focus if @group_cycling is %TRUE.
-		 *
-		 * Params:
-		 *     groupCycling = %TRUE if there are other widgets with the same mnemonic
-		 *
 		 * Return: %TRUE to stop other handlers from being invoked for the event.
 		 *     %FALSE to propagate the event further.
 		 */
@@ -9293,9 +9282,9 @@ public class Widget : ObjectG, ImplementorIF, BuildableIF
 			return wrapper.handlerId;
 		}
 		
-		extern(C) static int callBackMnemonicActivate(GtkWidget* widgetStruct, bool groupCycling, OnMnemonicActivateDelegateWrapper wrapper)
+		extern(C) static int callBackMnemonicActivate(GtkWidget* widgetStruct, bool arg1, OnMnemonicActivateDelegateWrapper wrapper)
 		{
-			return wrapper.dlg(groupCycling, wrapper.outer);
+			return wrapper.dlg(arg1, wrapper.outer);
 		}
 		
 		extern(C) static void callBackMnemonicActivateDestroy(OnMnemonicActivateDelegateWrapper wrapper, GClosure* closure)
@@ -10027,7 +10016,7 @@ public class Widget : ObjectG, ImplementorIF, BuildableIF
 		 *         been emitted, relative to @widget's left side
 		 *     y = the y coordinate of the cursor position where the request has
 		 *         been emitted, relative to @widget's top
-		 *     keyboardMode = %TRUE if the tooltip was triggered using the keyboard
+		 *     keyboardMode = %TRUE if the tooltip was trigged using the keyboard
 		 *     tooltip = a #GtkTooltip
 		 *
 		 * Return: %TRUE if @tooltip should be shown right now, %FALSE otherwise.

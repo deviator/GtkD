@@ -38,20 +38,20 @@ public  import gtkc.giotypes;
  * an alternative storage backend for #GSettings, you need to implement
  * the #GSettingsBackend interface and then make it implement the
  * extension point #G_SETTINGS_BACKEND_EXTENSION_POINT_NAME.
- * 
+ *
  * The interface defines methods for reading and writing values, a
  * method for determining if writing of certain values will fail
  * (lockdown) and a change notification mechanism.
- * 
+ *
  * The semantics of the interface are very precisely defined and
  * implementations must carefully adhere to the expectations of
  * callers that are documented on each of the interface methods.
- * 
+ *
  * Some of the GSettingsBackend functions accept or return a #GTree.
  * These trees always have strings as keys and #GVariant as values.
  * g_settings_backend_create_tree() is a convenience function to create
  * suitable trees.
- * 
+ *
  * The GSettingsBackend API is exported to allow third-party
  * implementations, but does not carry the same stability guarantees
  * as the public GIO API. For this reason, you have to define the
@@ -92,10 +92,10 @@ public class SettingsBackend : ObjectG
 
 
 	/** */
-	public static GType getType()
-	{
-		return g_settings_backend_get_type();
-	}
+	//public static GType getType()
+	//{
+	//	return g_settings_backend_get_type();
+	//}
 
 	/**
 	 * Calculate the longest common prefix of all keys in a tree and write
@@ -115,23 +115,23 @@ public class SettingsBackend : ObjectG
 	 *
 	 * Since: 2.26
 	 */
-	public static void flattenTree(BBTree tree, out string path, out string[] keys, out Variant[] values)
-	{
-		char* outpath = null;
-		char** outkeys = null;
-		GVariant** outvalues = null;
-		
-		g_settings_backend_flatten_tree((tree is null) ? null : tree.getBBTreeStruct(), &outpath, &outkeys, &outvalues);
-		
-		path = Str.toString(outpath);
-		keys = Str.toStringArray(outkeys);
-		
-		values = new Variant[getArrayLength(outvalues)];
-		for(size_t i = 0; i < getArrayLength(outvalues); i++)
-		{
-			values[i] = new Variant(cast(GVariant*) outvalues[i]);
-		}
-	}
+	//public static void flattenTree(BBTree tree, out string path, out string[] keys, out Variant[] values)
+	//{
+	//	char* outpath = null;
+	//	char** outkeys = null;
+	//	GVariant** outvalues = null;
+
+	//	g_settings_backend_flatten_tree((tree is null) ? null : tree.getBBTreeStruct(), &outpath, &outkeys, &outvalues);
+
+	//	path = Str.toString(outpath);
+	//	keys = Str.toStringArray(outkeys);
+
+	//	values = new Variant[getArrayLength(outvalues)];
+	//	for(size_t i = 0; i < getArrayLength(outvalues); i++)
+	//	{
+	//		values[i] = new Variant(cast(GVariant*) outvalues[i]);
+	//	}
+	//}
 
 	/**
 	 * Returns the default #GSettingsBackend. It is possible to override
@@ -144,17 +144,17 @@ public class SettingsBackend : ObjectG
 	 *
 	 * Since: 2.28
 	 */
-	public static SettingsBackend getDefault()
-	{
-		auto p = g_settings_backend_get_default();
-		
-		if(p is null)
-		{
-			return null;
-		}
-		
-		return ObjectG.getDObject!(SettingsBackend)(cast(GSettingsBackend*) p, true);
-	}
+	//public static SettingsBackend getDefault()
+	//{
+	//	auto p = g_settings_backend_get_default();
+
+	//	if(p is null)
+	//	{
+	//		return null;
+	//	}
+
+	//	return ObjectG.getDObject!(SettingsBackend)(cast(GSettingsBackend*) p, true);
+	//}
 
 	/**
 	 * Signals that a single key has possibly changed.  Backend
@@ -186,10 +186,10 @@ public class SettingsBackend : ObjectG
 	 *
 	 * Since: 2.26
 	 */
-	public void changed(string key, void* originTag)
-	{
-		g_settings_backend_changed(gSettingsBackend, Str.toStringz(key), originTag);
-	}
+	//public void changed(string key, void* originTag)
+	//{
+	//	g_settings_backend_changed(gSettingsBackend, Str.toStringz(key), originTag);
+	//}
 
 	/**
 	 * This call is a convenience wrapper.  It gets the list of changes from
@@ -202,10 +202,10 @@ public class SettingsBackend : ObjectG
 	 *
 	 * Since: 2.26
 	 */
-	public void changedTree(BBTree tree, void* originTag)
-	{
-		g_settings_backend_changed_tree(gSettingsBackend, (tree is null) ? null : tree.getBBTreeStruct(), originTag);
-	}
+	//public void changedTree(BBTree tree, void* originTag)
+	//{
+	//	g_settings_backend_changed_tree(gSettingsBackend, (tree is null) ? null : tree.getBBTreeStruct(), originTag);
+	//}
 
 	/**
 	 * Signals that a list of keys have possibly changed.  Backend
@@ -237,10 +237,10 @@ public class SettingsBackend : ObjectG
 	 *
 	 * Since: 2.26
 	 */
-	public void keysChanged(string path, string[] items, void* originTag)
-	{
-		g_settings_backend_keys_changed(gSettingsBackend, Str.toStringz(path), Str.toStringzArray(items), originTag);
-	}
+	//public void keysChanged(string path, string[] items, void* originTag)
+	//{
+	//	g_settings_backend_keys_changed(gSettingsBackend, Str.toStringz(path), Str.toStringzArray(items), originTag);
+	//}
 
 	/**
 	 * Signals that all keys below a given path may have possibly changed.
@@ -271,10 +271,10 @@ public class SettingsBackend : ObjectG
 	 *
 	 * Since: 2.26
 	 */
-	public void pathChanged(string path, void* originTag)
-	{
-		g_settings_backend_path_changed(gSettingsBackend, Str.toStringz(path), originTag);
-	}
+	//public void pathChanged(string path, void* originTag)
+	//{
+	//	g_settings_backend_path_changed(gSettingsBackend, Str.toStringz(path), originTag);
+	//}
 
 	/**
 	 * Signals that the writability of all keys below a given path may have
@@ -288,10 +288,10 @@ public class SettingsBackend : ObjectG
 	 *
 	 * Since: 2.26
 	 */
-	public void pathWritableChanged(string path)
-	{
-		g_settings_backend_path_writable_changed(gSettingsBackend, Str.toStringz(path));
-	}
+	//public void pathWritableChanged(string path)
+	//{
+	//	g_settings_backend_path_writable_changed(gSettingsBackend, Str.toStringz(path));
+	//}
 
 	/**
 	 * Signals that the writability of a single key has possibly changed.
@@ -304,10 +304,10 @@ public class SettingsBackend : ObjectG
 	 *
 	 * Since: 2.26
 	 */
-	public void writableChanged(string key)
-	{
-		g_settings_backend_writable_changed(gSettingsBackend, Str.toStringz(key));
-	}
+	//public void writableChanged(string key)
+	//{
+	//	g_settings_backend_writable_changed(gSettingsBackend, Str.toStringz(key));
+	//}
 
 	/**
 	 * Creates a keyfile-backed #GSettingsBackend.
@@ -363,17 +363,17 @@ public class SettingsBackend : ObjectG
 	 *
 	 * Return: a keyfile-backed #GSettingsBackend
 	 */
-	public static SettingsBackend keyfileSettingsBackendNew(string filename, string rootPath, string rootGroup)
-	{
-		auto p = g_keyfile_settings_backend_new(Str.toStringz(filename), Str.toStringz(rootPath), Str.toStringz(rootGroup));
-		
-		if(p is null)
-		{
-			return null;
-		}
-		
-		return ObjectG.getDObject!(SettingsBackend)(cast(GSettingsBackend*) p, true);
-	}
+	//public static SettingsBackend keyfileSettingsBackendNew(string filename, string rootPath, string rootGroup)
+	//{
+	//	auto p = g_keyfile_settings_backend_new(Str.toStringz(filename), Str.toStringz(rootPath), Str.toStringz(rootGroup));
+
+	//	if(p is null)
+	//	{
+	//		return null;
+	//	}
+
+	//	return ObjectG.getDObject!(SettingsBackend)(cast(GSettingsBackend*) p, true);
+	//}
 
 	/**
 	 * Creates a memory-backed #GSettingsBackend.
@@ -386,17 +386,17 @@ public class SettingsBackend : ObjectG
 	 *
 	 * Since: 2.28
 	 */
-	public static SettingsBackend memorySettingsBackendNew()
-	{
-		auto p = g_memory_settings_backend_new();
-		
-		if(p is null)
-		{
-			return null;
-		}
-		
-		return ObjectG.getDObject!(SettingsBackend)(cast(GSettingsBackend*) p, true);
-	}
+	//public static SettingsBackend memorySettingsBackendNew()
+	//{
+	//	auto p = g_memory_settings_backend_new();
+
+	//	if(p is null)
+	//	{
+	//		return null;
+	//	}
+
+	//	return ObjectG.getDObject!(SettingsBackend)(cast(GSettingsBackend*) p, true);
+	//}
 
 	/**
 	 * Creates a readonly #GSettingsBackend.
@@ -408,15 +408,15 @@ public class SettingsBackend : ObjectG
 	 *
 	 * Since: 2.28
 	 */
-	public static SettingsBackend nullSettingsBackendNew()
-	{
-		auto p = g_null_settings_backend_new();
-		
-		if(p is null)
-		{
-			return null;
-		}
-		
-		return ObjectG.getDObject!(SettingsBackend)(cast(GSettingsBackend*) p, true);
-	}
+	//public static SettingsBackend nullSettingsBackendNew()
+	//{
+	//	auto p = g_null_settings_backend_new();
+
+	//	if(p is null)
+	//	{
+	//		return null;
+	//	}
+
+	//	return ObjectG.getDObject!(SettingsBackend)(cast(GSettingsBackend*) p, true);
+	//}
 }

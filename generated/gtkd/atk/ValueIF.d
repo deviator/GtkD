@@ -195,7 +195,7 @@ public interface ValueIF{
 	 * Params:
 	 *     value = a #GValue representing the current accessible value
 	 */
-	public void getCurrentValue(out Value value);
+	public void getCurrentValue(Value value);
 
 	/**
 	 * Gets the minimum increment by which the value of this object may be
@@ -218,7 +218,7 @@ public interface ValueIF{
 	 * Params:
 	 *     value = a #GValue representing the maximum accessible value
 	 */
-	public void getMaximumValue(out Value value);
+	public void getMaximumValue(Value value);
 
 	/**
 	 * Gets the minimum increment by which the value of this object may be changed.  If zero,
@@ -232,7 +232,7 @@ public interface ValueIF{
 	 *
 	 * Since: 1.12
 	 */
-	public void getMinimumIncrement(out Value value);
+	public void getMinimumIncrement(Value value);
 
 	/**
 	 * Gets the minimum value of this object.
@@ -242,7 +242,7 @@ public interface ValueIF{
 	 * Params:
 	 *     value = a #GValue representing the minimum accessible value
 	 */
-	public void getMinimumValue(out Value value);
+	public void getMinimumValue(Value value);
 
 	/**
 	 * Gets the range of this object.

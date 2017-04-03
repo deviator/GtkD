@@ -940,9 +940,10 @@ public class Entry : Widget, CellEditableIF, EditableIF
 	}
 
 	/**
-	 * Converts from a position in the entry’s #PangoLayout (returned by
-	 * gtk_entry_get_layout()) to a position in the entry contents
-	 * (returned by gtk_entry_get_text()).
+	 * Converts from a position in the entry contents (returned
+	 * by gtk_entry_get_text()) to a position in the
+	 * entry’s #PangoLayout (returned by gtk_entry_get_layout(),
+	 * with text retrieved via pango_layout_get_text()).
 	 *
 	 * Params:
 	 *     layoutIndex = byte index into the entry layout text
@@ -1499,10 +1500,9 @@ public class Entry : Widget, CellEditableIF, EditableIF
 	}
 
 	/**
-	 * Converts from a position in the entry contents (returned
-	 * by gtk_entry_get_text()) to a position in the
-	 * entry’s #PangoLayout (returned by gtk_entry_get_layout(),
-	 * with text retrieved via pango_layout_get_text()).
+	 * Converts from a position in the entry’s #PangoLayout (returned by
+	 * gtk_entry_get_layout()) to a position in the entry contents
+	 * (returned by gtk_entry_get_text()).
 	 *
 	 * Params:
 	 *     textIndex = byte index into the entry contents
@@ -2291,7 +2291,7 @@ public class Entry : Widget, CellEditableIF, EditableIF
 	 * type of @widget.
 	 *
 	 * Params:
-	 *     widget = the container that is being populated
+	 *     popup = the container that is being populated
 	 */
 	gulong addOnPopulatePopup(void delegate(Widget, Entry) dlg, ConnectFlags connectFlags=cast(ConnectFlags)0)
 	{
@@ -2306,9 +2306,9 @@ public class Entry : Widget, CellEditableIF, EditableIF
 		return wrapper.handlerId;
 	}
 	
-	extern(C) static void callBackPopulatePopup(GtkEntry* entryStruct, GtkWidget* widget, OnPopulatePopupDelegateWrapper wrapper)
+	extern(C) static void callBackPopulatePopup(GtkEntry* entryStruct, GtkWidget* popup, OnPopulatePopupDelegateWrapper wrapper)
 	{
-		wrapper.dlg(ObjectG.getDObject!(Widget)(widget), wrapper.outer);
+		wrapper.dlg(ObjectG.getDObject!(Widget)(popup), wrapper.outer);
 	}
 	
 	extern(C) static void callBackPopulatePopupDestroy(OnPopulatePopupDelegateWrapper wrapper, GClosure* closure)

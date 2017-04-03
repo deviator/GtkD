@@ -214,31 +214,6 @@ public class FlowBox : Container, OrientableIF
 	}
 
 	/**
-	 * Gets the child in the (@x, @y) position.
-	 *
-	 * Params:
-	 *     x = the x coordinate of the child
-	 *     y = the y coordinate of the child
-	 *
-	 * Return: the child widget, which will
-	 *     always be a #GtkFlowBoxChild or %NULL in case no child widget
-	 *     exists for the given x and y coordinates.
-	 *
-	 * Since: 3.22.6
-	 */
-	public FlowBoxChild getChildAtPos(int x, int y)
-	{
-		auto p = gtk_flow_box_get_child_at_pos(gtkFlowBox, x, y);
-		
-		if(p is null)
-		{
-			return null;
-		}
-		
-		return ObjectG.getDObject!(FlowBoxChild)(cast(GtkFlowBoxChild*) p);
-	}
-
-	/**
 	 * Gets the horizontal spacing.
 	 *
 	 * Return: the horizontal spacing

@@ -51,8 +51,7 @@ public  import gtkc.giotypes;
  * manager should typically be exported at `/net/example/ExampleService1`, or
  * below (to allow for multiple object managers in a service).
  * 
- * It is supported, but not recommended, to export an object manager at the root
- * path, `/`.
+ * It is not supported to export an object manager at the root path, `/`.
  * 
  * See #GDBusObjectManagerClient for the client-side code that is
  * intended to be used with #GDBusObjectManagerServer or any D-Bus
@@ -113,7 +112,8 @@ public class DBusObjectManagerServer : ObjectG, DBusObjectManagerIF
 	 * signals being emitted.
 	 *
 	 * Params:
-	 *     objectPath = The object path to export the manager object at.
+	 *     objectPath = The object path to export the manager object at, which should
+	 *         not be `/`.
 	 *
 	 * Return: A #GDBusObjectManagerServer object. Free with g_object_unref().
 	 *

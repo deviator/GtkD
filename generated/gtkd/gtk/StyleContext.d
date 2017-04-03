@@ -869,7 +869,7 @@ public class StyleContext : ObjectG
 	 * Params:
 	 *     stockId = an icon name
 	 *
-	 * Return: The looked up %GtkIconSet, or %NULL
+	 * Return: The looked  up %GtkIconSet, or %NULL
 	 */
 	public IconSet lookupIconSet(string stockId)
 	{

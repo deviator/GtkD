@@ -25,42 +25,14 @@
 module vte.Regex;
 
 private import glib.ConstructionException;
-private import glib.ErrorG;
-private import glib.GException;
 private import glib.Str;
-private import gobject.ObjectG;
 private import vtec.vte;
 public  import vtec.vtetypes;
 
 
 /** */
-public class Regex
+public struct Regex
 {
-	/** the main Gtk struct */
-	protected VteRegex* vteRegex;
-	protected bool ownedRef;
-
-	/** Get the main Gtk struct */
-	public VteRegex* getRegexStruct()
-	{
-		return vteRegex;
-	}
-
-	/** the main Gtk struct as a void* */
-	protected void* getStruct()
-	{
-		return cast(void*)vteRegex;
-	}
-
-	/**
-	 * Sets our main struct and passes it to the parent class.
-	 */
-	public this (VteRegex* vteRegex, bool ownedRef = false)
-	{
-		this.vteRegex = vteRegex;
-		this.ownedRef = ownedRef;
-	}
-
 	/** */
 	public static Regex newMatch(string pattern, ptrdiff_t patternLength, uint flags)
 	{
@@ -103,51 +75,4 @@ public class Regex
 
 	/**
 	 */
-
-	/** */
-	public static GType getType()
-	{
-		return vte_regex_get_type();
-	}
-
-	/** */
-	public bool jit(uint flags)
-	{
-		GError* err = null;
-		
-		auto p = vte_regex_jit(vteRegex, flags, &err) != 0;
-		
-		if (err !is null)
-		{
-			throw new GException( new ErrorG(err) );
-		}
-		
-		return p;
-	}
-
-	/** */
-	public Regex doref()
-	{
-		auto p = vte_regex_ref(vteRegex);
-		
-		if(p is null)
-		{
-			return null;
-		}
-		
-		return ObjectG.getDObject!(Regex)(cast(VteRegex*) p, true);
-	}
-
-	/** */
-	public Regex unref()
-	{
-		auto p = vte_regex_unref(vteRegex);
-		
-		if(p is null)
-		{
-			return null;
-		}
-		
-		return ObjectG.getDObject!(Regex)(cast(VteRegex*) p, true);
-	}
 }

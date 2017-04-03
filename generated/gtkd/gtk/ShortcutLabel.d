@@ -37,6 +37,7 @@ public  import gtkc.gtktypes;
  * #GtkShortcutLabel is a widget that represents a single keyboard shortcut or gesture
  * in the user interface.
  */
+/+
 public class ShortcutLabel : Box
 {
 	/** the main Gtk struct */
@@ -91,12 +92,12 @@ public class ShortcutLabel : Box
 	public this(string accelerator)
 	{
 		auto p = gtk_shortcut_label_new(Str.toStringz(accelerator));
-		
+
 		if(p is null)
 		{
 			throw new ConstructionException("null returned by new");
 		}
-		
+
 		this(cast(GtkShortcutLabel*) p, true);
 	}
 
@@ -151,3 +152,4 @@ public class ShortcutLabel : Box
 		gtk_shortcut_label_set_disabled_text(gtkShortcutLabel, Str.toStringz(disabledText));
 	}
 }
++/

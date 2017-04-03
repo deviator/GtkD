@@ -1812,7 +1812,7 @@ public class TextView : Container, ScrollableIF
 	 * There are no default bindings for this signal.
 	 *
 	 * Params:
-	 *     step = the granularity of the movement, as a #GtkScrollStep
+	 *     step = the granularity of the move, as a #GtkMovementStep
 	 *     count = the number of @step units to move
 	 */
 	gulong addOnMoveViewport(void delegate(GtkScrollStep, int, TextView) dlg, ConnectFlags connectFlags=cast(ConnectFlags)0)

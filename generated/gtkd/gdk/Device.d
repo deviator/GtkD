@@ -25,7 +25,6 @@
 module gdk.Device;
 
 private import gdk.Cursor;
-private import gdk.DeviceTool;
 private import gdk.Display;
 private import gdk.Screen;
 private import gdk.Seat;
@@ -155,16 +154,6 @@ public class Device : ObjectG
 		}
 		
 		return ObjectG.getDObject!(Device)(cast(GdkDevice*) p);
-	}
-
-	/**
-	 * Returns the axes currently available on the device.
-	 *
-	 * Since: 3.22
-	 */
-	public GdkAxisFlags getAxes()
-	{
-		return gdk_device_get_axes(gdkDevice);
 	}
 
 	/**
@@ -829,64 +818,6 @@ public class Device : ObjectG
 	}
 	
 	extern(C) static void callBackChangedDestroy(OnChangedDelegateWrapper wrapper, GClosure* closure)
-	{
-		wrapper.remove(wrapper);
-	}
-
-	protected class OnToolChangedDelegateWrapper
-	{
-		static OnToolChangedDelegateWrapper[] listeners;
-		void delegate(DeviceTool, Device) dlg;
-		gulong handlerId;
-		
-		this(void delegate(DeviceTool, Device) dlg)
-		{
-			this.dlg = dlg;
-			this.listeners ~= this;
-		}
-		
-		void remove(OnToolChangedDelegateWrapper source)
-		{
-			foreach(index, wrapper; listeners)
-			{
-				if (wrapper.handlerId == source.handlerId)
-				{
-					listeners[index] = null;
-					listeners = std.algorithm.remove(listeners, index);
-					break;
-				}
-			}
-		}
-	}
-
-	/**
-	 * The ::tool-changed signal is emitted on pen/eraser
-	 * #GdkDevices whenever tools enter or leave proximity.
-	 *
-	 * Params:
-	 *     tool = The new current tool
-	 *
-	 * Since: 3.22
-	 */
-	gulong addOnToolChanged(void delegate(DeviceTool, Device) dlg, ConnectFlags connectFlags=cast(ConnectFlags)0)
-	{
-		auto wrapper = new OnToolChangedDelegateWrapper(dlg);
-		wrapper.handlerId = Signals.connectData(
-			this,
-			"tool-changed",
-			cast(GCallback)&callBackToolChanged,
-			cast(void*)wrapper,
-			cast(GClosureNotify)&callBackToolChangedDestroy,
-			connectFlags);
-		return wrapper.handlerId;
-	}
-	
-	extern(C) static void callBackToolChanged(GdkDevice* deviceStruct, GdkDeviceTool* tool, OnToolChangedDelegateWrapper wrapper)
-	{
-		wrapper.dlg(ObjectG.getDObject!(DeviceTool)(tool), wrapper.outer);
-	}
-	
-	extern(C) static void callBackToolChangedDestroy(OnToolChangedDelegateWrapper wrapper, GClosure* closure)
 	{
 		wrapper.remove(wrapper);
 	}

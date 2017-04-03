@@ -381,7 +381,6 @@ public class Application : GioApplication
 	 * gtk_application_set_app_menu().
 	 *
 	 * Return: the application menu of @application
-	 *     or %NULL if no application menu has been set.
 	 *
 	 * Since: 3.4
 	 */

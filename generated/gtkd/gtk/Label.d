@@ -1112,7 +1112,7 @@ public class Label : Misc
 	/**
 	 * The signal which gets emitted to activate a URI.
 	 * Applications may connect to it to override the default behaviour,
-	 * which is to call gtk_show_uri_on_window().
+	 * which is to call gtk_show_uri().
 	 *
 	 * Params:
 	 *     uri = the URI that is activated

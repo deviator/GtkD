@@ -78,9 +78,6 @@ public class Visual : ObjectG
 	 * Get the visual with the most available colors for the default
 	 * GDK screen. The return value should not be freed.
 	 *
-	 * Deprecated: Visual selection should be done using
-	 * gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual()
-	 *
 	 * Return: best visual
 	 */
 	public static Visual getBest()
@@ -100,9 +97,6 @@ public class Visual : ObjectG
 	 * means “largest,” i.e. 32 preferred over 24 preferred over 8 bits
 	 * per pixel.
 	 *
-	 * Deprecated: Visual selection should be done using
-	 * gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual()
-	 *
 	 * Return: best available depth
 	 */
 	public static int getBestDepth()
@@ -112,9 +106,6 @@ public class Visual : ObjectG
 
 	/**
 	 * Return the best available visual type for the default GDK screen.
-	 *
-	 * Deprecated: Visual selection should be done using
-	 * gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual()
 	 *
 	 * Return: best visual type
 	 */
@@ -126,9 +117,6 @@ public class Visual : ObjectG
 	/**
 	 * Combines gdk_visual_get_best_with_depth() and
 	 * gdk_visual_get_best_with_type().
-	 *
-	 * Deprecated: Visual selection should be done using
-	 * gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual()
 	 *
 	 * Params:
 	 *     depth = a bit depth
@@ -155,9 +143,6 @@ public class Visual : ObjectG
 	 * over grayscale or fixed-colormap visuals. The return value should
 	 * not be freed. %NULL may be returned if no visual supports @depth.
 	 *
-	 * Deprecated: Visual selection should be done using
-	 * gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual()
-	 *
 	 * Params:
 	 *     depth = a bit depth
 	 *
@@ -181,9 +166,6 @@ public class Visual : ObjectG
 	 * should not be freed. %NULL may be returned if no visual has type
 	 * @visual_type.
 	 *
-	 * Deprecated: Visual selection should be done using
-	 * gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual()
-	 *
 	 * Params:
 	 *     visualType = a visual type
 	 *
@@ -206,8 +188,6 @@ public class Visual : ObjectG
 	 * This is the visual for the root window of the display.
 	 * The return value should not be freed.
 	 *
-	 * Deprecated: Use gdk_screen_get_system_visual (gdk_screen_get_default ()).
-	 *
 	 * Return: system visual
 	 */
 	public static Visual getSystem()
@@ -224,11 +204,6 @@ public class Visual : ObjectG
 
 	/**
 	 * Returns the number of significant bits per red, green and blue value.
-	 *
-	 * Not all GDK backend provide a meaningful value for this function.
-	 *
-	 * Deprecated: Use gdk_visual_get_red_pixel_details() and its variants to
-	 * learn about the pixel layout of TrueColor and DirectColor visuals
 	 *
 	 * Return: The number of significant bits per color value for @visual.
 	 *
@@ -261,12 +236,6 @@ public class Visual : ObjectG
 	/**
 	 * Returns the byte order of this visual.
 	 *
-	 * The information returned by this function is only relevant
-	 * when working with XImages, and not all backends return
-	 * meaningful information for this.
-	 *
-	 * Deprecated: This information is not useful
-	 *
 	 * Return: A #GdkByteOrder stating the byte order of @visual.
 	 *
 	 * Since: 2.22
@@ -278,11 +247,6 @@ public class Visual : ObjectG
 
 	/**
 	 * Returns the size of a colormap for this visual.
-	 *
-	 * You have to use platform-specific APIs to manipulate colormaps.
-	 *
-	 * Deprecated: This information is not useful, since GDK does not
-	 * provide APIs to operate on colormaps.
 	 *
 	 * Return: The size of a colormap that is suitable for @visual.
 	 *
@@ -383,8 +347,6 @@ public class Visual : ObjectG
 	 *
 	 * Call g_list_free() on the return value when you’re finished with it.
 	 *
-	 * Deprecated: Use gdk_screen_list_visuals (gdk_screen_get_default ()).
-	 *
 	 * Return: a list of visuals; the list must be freed, but not its contents
 	 */
 	public static ListG listVisuals()
@@ -406,9 +368,6 @@ public class Visual : ObjectG
 	 * visual, removing duplicates.
 	 *
 	 * The array returned by this function should not be freed.
-	 *
-	 * Deprecated: Visual selection should be done using
-	 * gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual()
 	 *
 	 * Params:
 	 *     depths = return
@@ -432,9 +391,6 @@ public class Visual : ObjectG
 	 * visual, removing duplicates.
 	 *
 	 * The array returned by this function should not be freed.
-	 *
-	 * Deprecated: Visual selection should be done using
-	 * gdk_screen_get_system_visual() and gdk_screen_get_rgba_visual()
 	 *
 	 * Params:
 	 *     visualTypes = return

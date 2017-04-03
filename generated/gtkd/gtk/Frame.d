@@ -69,9 +69,7 @@ public  import gtkc.gtktypes;
  * 
  * GtkFrame has a main CSS node with name frame and a subnode with
  * name border. The border node is used to render the visible border.
- * The main frame node can be given the style class .flat, which disables
- * drawing of the border, equivalent to calling gtk_frame_set_shadow_type() with
- * GTK_SHADOW_NONE.
+ * The style class .flat can appear with the main node.
  */
 public class Frame : Bin
 {
@@ -208,8 +206,8 @@ public class Frame : Bin
 	}
 
 	/**
-	 * Removes the current #GtkFrame:label-widget. If @label is not %NULL, creates a
-	 * new #GtkLabel with that text and adds it as the #GtkFrame:label-widget.
+	 * Sets the text of the label. If @label is %NULL,
+	 * the current label is removed.
 	 *
 	 * Params:
 	 *     label = the text to use as the label of the frame
@@ -238,8 +236,9 @@ public class Frame : Bin
 	}
 
 	/**
-	 * Sets the #GtkFrame:label-widget for the frame. This is the widget that
-	 * will appear embedded in the top edge of the frame as a title.
+	 * Sets the label widget for the frame. This is the widget that
+	 * will appear embedded in the top edge of the frame as a
+	 * title.
 	 *
 	 * Params:
 	 *     labelWidget = the new label widget
@@ -250,10 +249,7 @@ public class Frame : Bin
 	}
 
 	/**
-	 * Sets the #GtkFrame:shadow-type for @frame, i.e. whether it is drawn without
-	 * (GTK_SHADOW_NONE) or with (other values) a visible border. Values other than
-	 * GTK_SHADOW_NONE are treated identically by #GtkFrame. The chosen type is
-	 * applied by removing or adding the .flat class to the main CSS node, frame.
+	 * Sets the shadow type for @frame.
 	 *
 	 * Params:
 	 *     type = the new #GtkShadowType

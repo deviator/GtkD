@@ -47,12 +47,12 @@ private import std.algorithm;
  * All parts of the dialog are optional.
  * 
  * About dialogs often contain links and email addresses. GtkAboutDialog
- * displays these as clickable links. By default, it calls gtk_show_uri_on_window()
+ * displays these as clickable links. By default, it calls gtk_show_uri()
  * when a user clicks one. The behaviour can be overridden with the
  * #GtkAboutDialog::activate-link signal.
  * 
  * To specify a person with an email address, use a string like
- * "Edgar Allan Poe <edgar\@poe.com>". To specify a website with a title,
+ * "Edgar Allan Poe <edgar@poe.com>". To specify a website with a title,
  * use a string like "GTK+ team http://www.gtk.org".
  * 
  * To make constructing a GtkAboutDialog as convenient as possible, you can
@@ -615,7 +615,7 @@ public class AboutDialog : Dialog
 	/**
 	 * The signal which gets emitted to activate a URI.
 	 * Applications may connect to it to override the default behaviour,
-	 * which is to call gtk_show_uri_on_window().
+	 * which is to call gtk_show_uri().
 	 *
 	 * Params:
 	 *     uri = the URI that is activated

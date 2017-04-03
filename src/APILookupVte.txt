@@ -31,33 +31,29 @@ struct: Terminal
 import: vte.Regex : RegexVte = Regex
 in: event_check_gregex_simple n_regexes
 in: event_check_gregex_simple matches
-in: event_check_regex_simple n_regexes
-in: event_check_regex_simple matches
 structWrap: Regex RegexVte
 
 struct: Regex
 import: glib.Str
 import: glib.ConstructionException
-noCode: new_for_match
-noCode: new_for_search
 code: start
 	/** */
 	public static Regex newMatch(string pattern, ptrdiff_t patternLength, uint flags)
 	{
 		GError* err = null;
-		
+
 		auto p = vte_regex_new_for_match(Str.toStringz(pattern), patternLength, flags, &err);
-		
+
 		if (err !is null)
 		{
 			throw new GException( new ErrorG(err) );
 		}
-		
+
 		if(p is null)
 		{
 			throw new ConstructionException("null returned by new_for_match");
 		}
-		
+
 		return new Regex(cast(VteRegex*) p);
 	}
 
@@ -65,19 +61,19 @@ code: start
 	public static Regex newSearch(string pattern, ptrdiff_t patternLength, uint flags)
 	{
 		GError* err = null;
-		
+
 		auto p = vte_regex_new_for_search(Str.toStringz(pattern), patternLength, flags, &err);
-		
+
 		if (err !is null)
 		{
 			throw new GException( new ErrorG(err) );
 		}
-		
+
 		if(p is null)
 		{
 			throw new ConstructionException("null returned by new_for_search");
 		}
-		
+
 		return new Regex(cast(VteRegex*) p);
 	}
 code: end
